@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AI Deploy â Intelligent Operations</title>
+<title>AI Deploy — Intelligent Operations</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
@@ -118,7 +118,7 @@
 <script type="text/babel">
 const { useState, useEffect, useRef, useMemo } = React;
 
-/* âââ Hooks âââ */
+/* ─── Hooks ─── */
 function useInView(ref, options = {}) {
   const [isInView, setIsInView] = useState(false);
   useEffect(() => {
@@ -140,7 +140,7 @@ function Reveal({ children, delay, direction, className = '' }) {
   return <div ref={ref} className={`${cls} ${dCls} ${inView ? 'visible' : ''} ${className}`}>{children}</div>;
 }
 
-/* âââ Tokens âââ */
+/* ─── Tokens ─── */
 const C = {
   bg: '#F8FAFC', white: '#FFFFFF', subtle: '#F1F5F9',
   deepBlue: '#1E3A8A', blue: '#3B82F6', lightBlue: '#93C5FD', paleBlue: '#DBEAFE',
@@ -158,7 +158,7 @@ const C = {
 const mono = "'JetBrains Mono', monospace";
 const heading = "'Inter', system-ui, sans-serif";
 
-/* âââ Navigation âââ */
+/* ─── Navigation ─── */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -200,7 +200,7 @@ function Nav() {
   );
 }
 
-/* âââ Hero (no NetworkViz) âââ */
+/* ─── Hero (no NetworkViz) ─── */
 function Hero() {
   return (
     <section className="grid-bg" style={{
@@ -216,7 +216,7 @@ function Hero() {
           display:'inline-block', fontFamily:mono, fontSize:11, fontWeight:500, color:C.textFaint,
           letterSpacing:'0.1em', marginBottom:24, padding:'5px 12px', borderRadius:4,
           background:'rgba(30,58,138,0.04)', border:'1px solid rgba(30,58,138,0.08)',
-        }}>EST. 2026 Â· SYDNEY</div>
+        }}>EST. 2026 · SYDNEY</div>
         <h1 className="hero-enter hero-d2" style={{
           fontFamily:heading, fontSize:'clamp(48px, 6vw, 72px)', fontWeight:800,
           lineHeight:1.05, letterSpacing:'-0.04em', color:C.textPrimary, marginBottom:20,
@@ -232,7 +232,7 @@ function Hero() {
         <p className="hero-enter hero-d4" style={{
           fontSize:15, lineHeight:1.7, color:C.textMuted, maxWidth:520, margin:'0 auto 40px',
         }}>
-          We deploy AI that executes â not experiments. From workflow audit to managed operations, we take professional services firms from pilot to production.
+          We deploy AI that executes — not experiments. From workflow audit to managed operations, we take professional services firms from pilot to production.
         </p>
         <div className="hero-enter hero-d5" style={{display:'flex', alignItems:'center', gap:16, justifyContent:'center'}}>
           <a href="#assess" style={{
@@ -243,14 +243,14 @@ function Hero() {
           }}
           onMouseEnter={e => {e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow=`0 4px 20px ${C.blueGlow}`;}}
           onMouseLeave={e => {e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow=`0 2px 12px ${C.blueGlow}`;}}
-          >Get Your Free Assessment <span style={{fontSize:16}}>â</span></a>
+          >Get Your Free Assessment <span style={{fontSize:16}}>→</span></a>
         </div>
       </div>
     </section>
   );
 }
 
-/* âââ Problem Section â Full-width animated dashboard chart âââ */
+/* ─── Problem Section — Full-width animated dashboard chart ─── */
 function ProblemSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -275,7 +275,7 @@ function ProblemSection() {
         <Reveal>
           <div style={{maxWidth:640, marginBottom:48}}>
             <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>The Problem</div>
-            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>The capabilityâexecution divergence.</h2>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>The capability–execution divergence.</h2>
             <p style={{fontSize:15, color:C.textBody, lineHeight:1.7}}>
               AI capability is advancing exponentially. Organisational execution is not. The result: a widening opportunity deficit that compounds every quarter you delay.
             </p>
@@ -287,7 +287,7 @@ function ProblemSection() {
             <div style={{padding:'14px 28px', background:C.subtle, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
               <div style={{display:'flex', alignItems:'center', gap:10}}>
                 <div style={{width:7, height:7, borderRadius:'50%', background:C.red, animation: inView ? 'pulse 2s infinite' : 'none'}} />
-                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>Capability vs Execution â Industry Benchmark</span>
+                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>Capability vs Execution — Industry Benchmark</span>
               </div>
               <div style={{display:'flex', alignItems:'center', gap:16}}>
                 <span style={{fontSize:36, fontWeight:800, color:C.deepBlue, fontFamily:mono, lineHeight:1}}>72%</span>
@@ -358,7 +358,7 @@ function ProblemSection() {
                   opacity:animPhase >= 4 ? 1 : 0, transform:animPhase >= 4 ? 'translateY(0)' : 'translateY(8px)',
                   transition:'all 0.5s ease',
                 }}>
-                  â OPPORTUNITY DEFICIT
+                  ← OPPORTUNITY DEFICIT
                 </div>
 
                 {/* X-axis */}
@@ -385,7 +385,7 @@ function ProblemSection() {
                   </div>
                 ))}
               </div>
-              <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY Â· INDUSTRY ANALYSIS</span>
+              <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY · INDUSTRY ANALYSIS</span>
             </div>
           </div>
         </Reveal>
@@ -394,12 +394,12 @@ function ProblemSection() {
   );
 }
 
-/* âââ Transformation Section â Full-width dynamic cards + visual workflows âââ */
+/* ─── Transformation Section — Full-width dynamic cards + visual workflows ─── */
 function TransformationSection() {
   const workflows = [
-    { name:'Client Intake', steps:['Email received','Extract ABN & details','Validate against ASIC','Pre-fill CRM','Generate engagement letter','Send for e-signature'], icon:'ð§', color:C.deepBlue, time:'From 2 hrs â 5 min' },
-    { name:'Compliance Check', steps:['New matter opened','Cross-ref regulatory DB','Run AML screening','Score risk level','Generate report','Route for approval'], icon:'ð¡ï¸', color:C.teal, time:'From 4 hrs â 12 min' },
-    { name:'Report Generation', steps:['Schedule trigger','Pull data from 6 sources','Normalise & analyse','Build narrative','Format & brand','Distribute to stakeholders'], icon:'ð', color:C.purple, time:'From 6 hrs â 8 min' },
+    { name:'Client Intake', steps:['Email received','Extract ABN & details','Validate against ASIC','Pre-fill CRM','Generate engagement letter','Send for e-signature'], icon:'📧', color:C.deepBlue, time:'From 2 hrs → 5 min' },
+    { name:'Compliance Check', steps:['New matter opened','Cross-ref regulatory DB','Run AML screening','Score risk level','Generate report','Route for approval'], icon:'🛡️', color:C.teal, time:'From 4 hrs → 12 min' },
+    { name:'Report Generation', steps:['Schedule trigger','Pull data from 6 sources','Normalise & analyse','Build narrative','Format & brand','Distribute to stakeholders'], icon:'📊', color:C.purple, time:'From 6 hrs → 8 min' },
   ];
 
   return (
@@ -415,15 +415,15 @@ function TransformationSection() {
           </div>
         </Reveal>
 
-        {/* Reactive vs Proactive â full-width */}
+        {/* Reactive vs Proactive — full-width */}
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:2, borderRadius:16, overflow:'hidden', marginBottom:48, border:`1px solid ${C.border}`}} className="two-col">
           <Reveal delay={1}>
             <div className="shift-card" style={{padding:'48px 40px', background:C.white, minHeight:320, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden'}}>
               <div style={{position:'absolute', top:0, left:0, right:0, height:4, background:`linear-gradient(90deg, ${C.slate300}, transparent)`}} />
               <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:20}}>
-                <div style={{width:48, height:48, borderRadius:12, background:C.redTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>â³</div>
+                <div style={{width:48, height:48, borderRadius:12, background:C.redTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>⏳</div>
                 <div>
-                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.textFaint, letterSpacing:'0.1em'}}>BEFORE Â· ASSISTED WORK</div>
+                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.textFaint, letterSpacing:'0.1em'}}>BEFORE · ASSISTED WORK</div>
                   <div style={{fontFamily:heading, fontSize:28, fontWeight:800, color:C.textPrimary, letterSpacing:'-0.02em'}}>Reactive</div>
                 </div>
               </div>
@@ -431,7 +431,7 @@ function TransformationSection() {
                 Staff prompt a chatbot. One question at a time. No memory. No integration. No compounding value. Every interaction starts from zero.
               </p>
               <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-                {[{t:'Manual prompts',i:'âï¸'},{t:'Single tasks',i:'1ï¸â£'},{t:'No integration',i:'ð'},{t:'Per-seat cost',i:'ð°'}].map(({t,i}) => (
+                {[{t:'Manual prompts',i:'✍️'},{t:'Single tasks',i:'1️⃣'},{t:'No integration',i:'🔌'},{t:'Per-seat cost',i:'💰'}].map(({t,i}) => (
                   <span key={t} style={{fontSize:12, padding:'8px 14px', borderRadius:8, background:'rgba(239,68,68,0.04)', border:'1px solid rgba(239,68,68,0.1)', color:C.textMuted, fontWeight:500, display:'flex', alignItems:'center', gap:6}}>
                     <span style={{fontSize:14}}>{i}</span>{t}
                   </span>
@@ -453,9 +453,9 @@ function TransformationSection() {
             <div className="shift-card" style={{padding:'48px 40px', background:C.white, minHeight:320, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden'}}>
               <div style={{position:'absolute', top:0, left:0, right:0, height:4, background:`linear-gradient(90deg, ${C.deepBlue}, ${C.blue})`}} />
               <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:20}}>
-                <div style={{width:48, height:48, borderRadius:12, background:'rgba(30,58,138,0.06)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>â¡</div>
+                <div style={{width:48, height:48, borderRadius:12, background:'rgba(30,58,138,0.06)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>⚡</div>
                 <div>
-                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em'}}>AFTER Â· AGENTIC WORK</div>
+                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em'}}>AFTER · AGENTIC WORK</div>
                   <div style={{fontFamily:heading, fontSize:28, fontWeight:800, color:C.textPrimary, letterSpacing:'-0.02em'}}>Proactive</div>
                 </div>
               </div>
@@ -463,7 +463,7 @@ function TransformationSection() {
                 Agents execute entire workflows. Scheduled triggers. System memory. Cross-platform orchestration. Every skill makes the next one more powerful.
               </p>
               <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-                {[{t:'Autonomous execution',i:'ð¤'},{t:'Workflow chains',i:'ð'},{t:'Full integration',i:'ð'},{t:'ROI-positive',i:'ð'}].map(({t,i}) => (
+                {[{t:'Autonomous execution',i:'🤖'},{t:'Workflow chains',i:'🔗'},{t:'Full integration',i:'🔄'},{t:'ROI-positive',i:'📈'}].map(({t,i}) => (
                   <span key={t} style={{fontSize:12, padding:'8px 14px', borderRadius:8, background:'rgba(30,58,138,0.04)', border:'1px solid rgba(30,58,138,0.1)', color:C.deepBlue, fontWeight:500, display:'flex', alignItems:'center', gap:6}}>
                     <span style={{fontSize:14}}>{i}</span>{t}
                   </span>
@@ -482,7 +482,7 @@ function TransformationSection() {
           </Reveal>
         </div>
 
-        {/* Agentic Workflows â visual pipeline cards */}
+        {/* Agentic Workflows — visual pipeline cards */}
         <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:20}}>Example Agentic Workflows</div>
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16}} className="three-col">
           {workflows.map((wf, wi) => (
@@ -522,7 +522,7 @@ function TransformationSection() {
   );
 }
 
-/* âââ Architecture Section âââ */
+/* ─── Architecture Section ─── */
 function ArchitectureSection() {
   const phases = [
     { num:'01', name:'Audit', sub:'Friction Map & ROI', desc:'Map every workflow. Score automation potential. Deliver projected returns.' },
@@ -558,16 +558,16 @@ function ArchitectureSection() {
   );
 }
 
-/* âââ Intelligent Router â Full-section hub visual âââ */
+/* ─── Intelligent Router — Full-section hub visual ─── */
 function RouterSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
   const agents = [
-    { role:'REASONING', model:'Claude', desc:'Complex legal and consulting logic. Multi-step analysis. Nuanced judgment calls.', color:C.deepBlue, icon:'ð§ ', pos:'top' },
-    { role:'RESEARCH', model:'Gemini', desc:'Deep-web operational audits. Information synthesis across large document sets.', color:C.teal, icon:'ð', pos:'right' },
-    { role:'SPEED', model:'Llama / Groq', desc:'High-volume data ingestion. Sub-second processing for routine extraction.', color:C.purple, icon:'â¡', pos:'bottom' },
-    { role:'SYNTHESIS', model:'GPT-4o', desc:'Cross-platform integration. Report generation and formatting workflows.', color:C.orange, icon:'ð', pos:'left' },
+    { role:'REASONING', model:'Claude', desc:'Complex legal and consulting logic. Multi-step analysis. Nuanced judgment calls.', color:C.deepBlue, icon:'🧠', pos:'top' },
+    { role:'RESEARCH', model:'Gemini', desc:'Deep-web operational audits. Information synthesis across large document sets.', color:C.teal, icon:'🔍', pos:'right' },
+    { role:'SPEED', model:'Llama / Groq', desc:'High-volume data ingestion. Sub-second processing for routine extraction.', color:C.purple, icon:'⚡', pos:'bottom' },
+    { role:'SYNTHESIS', model:'GPT-4o', desc:'Cross-platform integration. Report generation and formatting workflows.', color:C.orange, icon:'🔄', pos:'left' },
   ];
 
   return (
@@ -578,7 +578,7 @@ function RouterSection() {
             <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Intelligent Router</div>
             <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>Task-specific execution.</h2>
             <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, maxWidth:560, margin:'0 auto'}}>
-              Every task routes to the optimal model. Your Skill Library isn't tied to a single vendor â it's orchestrated across the best available intelligence for each job.
+              Every task routes to the optimal model. Your Skill Library isn't tied to a single vendor — it's orchestrated across the best available intelligence for each job.
             </p>
           </div>
         </Reveal>
@@ -621,13 +621,13 @@ function RouterSection() {
                   position:'absolute', top:-16, left:'50%', transform:'translateX(-50%)',
                   width:32, height:32, borderRadius:'50%', background:C.deepBlue,
                   display:'flex', alignItems:'center', justifyContent:'center', fontSize:16,
-                }}>â</div>
+                }}>◉</div>
                 <div style={{fontFamily:heading, fontSize:18, fontWeight:800, color:C.deepBlue, marginBottom:6, marginTop:8}}>Central Orchestrator</div>
                 <div style={{fontSize:13, color:C.textMuted, lineHeight:1.5}}>Dynamically routes every incoming task to the specialist agent best suited for the job</div>
               </div>
             </div>
 
-            {/* Agent cards â 2x2 grid around center */}
+            {/* Agent cards — 2x2 grid around center */}
             <div className="agent-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, position:'relative', zIndex:2, marginTop:-40}}>
               {agents.map((a,i) => (
                 <div key={a.role} className="deploy-card" style={{
@@ -656,21 +656,21 @@ function RouterSection() {
   );
 }
 
-/* âââ Skill Library â Full section, lots of skills âââ */
+/* ─── Skill Library — Full section, lots of skills ─── */
 function SkillLibrarySection() {
   const skills = [
-    { file:'client_intake.skill', name:'Client Intake', desc:'Automates new client onboarding, data collection, and system entry.', icon:'ð§' },
-    { file:'invoice_recon.skill', name:'Invoice Reconciliation', desc:'Matches invoices against purchase orders and flags discrepancies.', icon:'ð°' },
-    { file:'compliance_check.skill', name:'Compliance Screener', desc:'Cross-references data against regulatory frameworks and flags risk.', icon:'ð¡ï¸' },
-    { file:'weekly_report.skill', name:'Weekly Report Generator', desc:'Compiles multi-source data into formatted weekly summaries.', icon:'ð' },
-    { file:'knowledge_search.skill', name:'Knowledge Search', desc:'Semantic search across your entire document library in seconds.', icon:'ð' },
-    { file:'email_triage.skill', name:'Email Triage Agent', desc:'Classifies, prioritises and routes incoming emails to the right team.', icon:'ð¬' },
-    { file:'contract_review.skill', name:'Contract Reviewer', desc:'Extracts key clauses, flags unusual terms, and compares against templates.', icon:'ð' },
-    { file:'meeting_prep.skill', name:'Meeting Prep Agent', desc:'Pulls client history, recent comms, and generates briefing documents.', icon:'ð' },
-    { file:'data_entry.skill', name:'Data Entry Automator', desc:'Extracts structured data from PDFs, images, and forms into your systems.', icon:'â¨ï¸' },
-    { file:'conflict_check.skill', name:'Conflict Checker', desc:'Runs comprehensive conflict of interest checks across client databases.', icon:'âï¸' },
-    { file:'proposal_builder.skill', name:'Proposal Builder', desc:'Generates tailored proposals using client data and service templates.', icon:'ð' },
-    { file:'time_entry.skill', name:'Time Entry Agent', desc:'Auto-logs billable hours from calendar, email, and document activity.', icon:'â±ï¸' },
+    { file:'client_intake.skill', name:'Client Intake', desc:'Automates new client onboarding, data collection, and system entry.', icon:'📧' },
+    { file:'invoice_recon.skill', name:'Invoice Reconciliation', desc:'Matches invoices against purchase orders and flags discrepancies.', icon:'💰' },
+    { file:'compliance_check.skill', name:'Compliance Screener', desc:'Cross-references data against regulatory frameworks and flags risk.', icon:'🛡️' },
+    { file:'weekly_report.skill', name:'Weekly Report Generator', desc:'Compiles multi-source data into formatted weekly summaries.', icon:'📊' },
+    { file:'knowledge_search.skill', name:'Knowledge Search', desc:'Semantic search across your entire document library in seconds.', icon:'🔍' },
+    { file:'email_triage.skill', name:'Email Triage Agent', desc:'Classifies, prioritises and routes incoming emails to the right team.', icon:'📬' },
+    { file:'contract_review.skill', name:'Contract Reviewer', desc:'Extracts key clauses, flags unusual terms, and compares against templates.', icon:'📝' },
+    { file:'meeting_prep.skill', name:'Meeting Prep Agent', desc:'Pulls client history, recent comms, and generates briefing documents.', icon:'📅' },
+    { file:'data_entry.skill', name:'Data Entry Automator', desc:'Extracts structured data from PDFs, images, and forms into your systems.', icon:'⌨️' },
+    { file:'conflict_check.skill', name:'Conflict Checker', desc:'Runs comprehensive conflict of interest checks across client databases.', icon:'⚖️' },
+    { file:'proposal_builder.skill', name:'Proposal Builder', desc:'Generates tailored proposals using client data and service templates.', icon:'📄' },
+    { file:'time_entry.skill', name:'Time Entry Agent', desc:'Auto-logs billable hours from calendar, email, and document activity.', icon:'⏱️' },
   ];
 
   return (
@@ -681,7 +681,7 @@ function SkillLibrarySection() {
             <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Skill Library</div>
             <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>Your firm's growing library of AI capabilities.</h2>
             <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, maxWidth:600, margin:'0 auto'}}>
-              Every automation we deploy becomes a reusable skill â a structured instruction set that compounds in value and builds proprietary operational IP for your firm.
+              Every automation we deploy becomes a reusable skill — a structured instruction set that compounds in value and builds proprietary operational IP for your firm.
             </p>
           </div>
         </Reveal>
@@ -704,7 +704,7 @@ function SkillLibrarySection() {
   );
 }
 
-/* âââ Value Dashboard âââ */
+/* ─── Value Dashboard ─── */
 function ValueSection() {
   return (
     <section id="value" style={{padding:'120px 48px', background:C.bg, borderTop:`1px solid ${C.border}`}}>
@@ -720,9 +720,9 @@ function ValueSection() {
             <div style={{padding:'14px 28px', background:C.subtle, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
               <div style={{display:'flex', alignItems:'center', gap:10}}>
                 <div style={{width:7, height:7, borderRadius:'50%', background:C.green}} />
-                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>AI Deploy â Monthly Impact Report</span>
+                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>AI Deploy — Monthly Impact Report</span>
               </div>
-              <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>FEB 2026 Â· MONTH 4</span>
+              <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>FEB 2026 · MONTH 4</span>
             </div>
             <div className="kpi-row" style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', borderBottom:`1px solid ${C.border}`}}>
               <KPICard label="Capacity Repatriated" value={420} suffix=" hrs/mo" delta="+38" deltaLabel="vs last month" />
@@ -777,21 +777,21 @@ function KPICard({ label, value, suffix, prefix='', delta, deltaLabel, borderLef
         {prefix && <span style={{color:C.deepBlue}}>{prefix}</span>}{displayVal}<span style={{fontSize:18, color:C.textFaint, fontWeight:500}}>{suffix}</span>
       </div>
       <div style={{display:'flex', alignItems:'center', gap:5}}>
-        <span style={{fontSize:11, fontWeight:600, color:C.green, fontFamily:mono}}>â² {delta}</span>
+        <span style={{fontSize:11, fontWeight:600, color:C.green, fontFamily:mono}}>▲ {delta}</span>
         <span style={{fontSize:11, color:C.textFaint}}>{deltaLabel}</span>
       </div>
     </div>
   );
 }
 
-/* âââ Autonomy Section â Slider + full-width support/deploy âââ */
+/* ─── Autonomy Section — Slider + full-width support/deploy ─── */
 function AutonomySection() {
   const [sliderVal, setSliderVal] = useState(20);
   const phases = [
-    { pct:0, label:'Human-in-the-Loop', desc:'Full human review on every task. AI assists, human decides.', icon:'ð¤' },
-    { pct:33, label:'Supervised Autonomy', desc:'AI executes routine tasks. Humans review flagged exceptions.', icon:'ðï¸' },
-    { pct:66, label:'Exception-Only Review', desc:'AI handles 90%+ autonomously. Humans intervene on edge cases.', icon:'ð¯' },
-    { pct:100, label:'Human-on-the-Loop', desc:'Full autonomous operation. Humans monitor dashboards and strategic decisions.', icon:'ð' },
+    { pct:0, label:'Human-in-the-Loop', desc:'Full human review on every task. AI assists, human decides.', icon:'👤' },
+    { pct:33, label:'Supervised Autonomy', desc:'AI executes routine tasks. Humans review flagged exceptions.', icon:'👁️' },
+    { pct:66, label:'Exception-Only Review', desc:'AI handles 90%+ autonomously. Humans intervene on edge cases.', icon:'🎯' },
+    { pct:100, label:'Human-on-the-Loop', desc:'Full autonomous operation. Humans monitor dashboards and strategic decisions.', icon:'🚀' },
   ];
 
   const activePhase = sliderVal < 25 ? 0 : sliderVal < 50 ? 1 : sliderVal < 75 ? 2 : 3;
@@ -845,28 +845,28 @@ function AutonomySection() {
           </div>
         </Reveal>
 
-        {/* Support Layer + Deployment Options â full-width grid */}
+        {/* Support Layer + Deployment Options — full-width grid */}
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:20}} className="two-col">
           <Reveal delay={2}>
             <div style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:16, padding:'36px 32px', height:'100%'}}>
               <div style={{fontSize:12, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:24}}>SUPPORT LAYER</div>
               <div style={{display:'flex', flexDirection:'column', gap:16}}>
                 <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
-                  <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð</div>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>📚</div>
                   <div>
                     <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Client Wiki</div>
                     <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Searchable knowledge base maintained by AI. Every process, decision, and precedent documented and instantly accessible.</p>
                   </div>
                 </div>
                 <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
-                  <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð¤</div>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>🤖</div>
                   <div>
                     <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Support Chatbot</div>
                     <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Handles Tier 1 internal queries automatically. Staff get instant answers without waiting for IT or senior team members.</p>
                   </div>
                 </div>
                 <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
-                  <div style={{width:44, height:44, borderRadius:10, background:C.amberTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð</div>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.amberTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>🔀</div>
                   <div>
                     <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Escalation Paths</div>
                     <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Complex issues automatically route to human specialists. Clear SLAs and priority scoring ensure nothing falls through the cracks.</p>
@@ -881,7 +881,7 @@ function AutonomySection() {
               <div style={{display:'flex', flexDirection:'column', gap:16}}>
                 <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
                   <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
-                    <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>âï¸</div>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>☁️</div>
                     <div>
                       <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>Cloud Hosted</div>
                       <div style={{fontSize:11, fontFamily:mono, color:C.green, fontWeight:600}}>FASTEST TO DEPLOY</div>
@@ -896,7 +896,7 @@ function AutonomySection() {
                 </div>
                 <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
                   <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
-                    <div style={{width:44, height:44, borderRadius:10, background:C.purpleTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>ð</div>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.purpleTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>🔒</div>
                     <div>
                       <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>On-Premise (Sovereign)</div>
                       <div style={{fontSize:11, fontFamily:mono, color:C.purple, fontWeight:600}}>MAXIMUM SECURITY</div>
@@ -911,7 +911,7 @@ function AutonomySection() {
                 </div>
                 <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
                   <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
-                    <div style={{width:44, height:44, borderRadius:10, background:C.tealTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>ð</div>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.tealTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>🔄</div>
                     <div>
                       <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>Hybrid</div>
                       <div style={{fontSize:11, fontFamily:mono, color:C.teal, fontWeight:600}}>BEST OF BOTH</div>
@@ -933,11 +933,11 @@ function AutonomySection() {
   );
 }
 
-/* âââ Process Section âââ */
+/* ─── Process Section ─── */
 function ProcessSection() {
   const steps = [
-    { num:'01', title:'Audit', duration:'1 week', desc:'Map every workflow. Score automation potential. Deliver a ranked roadmap with projected returns per process â before any implementation spend.' },
-    { num:'02', title:'Build', duration:'2â4 weeks', desc:'Deploy the highest-value automations from the roadmap. Integrated with your systems, tested on live data, team trained and supported.' },
+    { num:'01', title:'Audit', duration:'1 week', desc:'Map every workflow. Score automation potential. Deliver a ranked roadmap with projected returns per process — before any implementation spend.' },
+    { num:'02', title:'Build', duration:'2–4 weeks', desc:'Deploy the highest-value automations from the roadmap. Integrated with your systems, tested on live data, team trained and supported.' },
     { num:'03', title:'Operate', duration:'Ongoing', desc:'Continuous optimisation. Model updates, API changes, quarterly skill expansions, and monthly reporting. You focus on the practice.' },
   ];
   return (
@@ -969,13 +969,13 @@ function ProcessSection() {
   );
 }
 
-/* âââ Survey + Dashboard Report âââ */
+/* ─── Survey + Dashboard Report ─── */
 const SURVEY_STEPS = [
   { id:'size', question:'How many staff are in your organisation?', type:'single',
     options:[
-      {label:'1â14', tag:'Micro'},
-      {label:'15â50', tag:'ICP'},
-      {label:'51â150', tag:'ICP'},
+      {label:'1–14', tag:'Micro'},
+      {label:'15–50', tag:'ICP'},
+      {label:'51–150', tag:'ICP'},
       {label:'150+', tag:'Enterprise'},
     ]},
   { id:'industry', question:'What is your primary industry?', type:'single',
@@ -1029,7 +1029,7 @@ const SKILL_RECS = {
   },
   'Searching for internal information and past documents': {
     file:'knowledge_search.skill', name:'Knowledge Search Agent', hours:30,
-    desc:'Semantic search across your entire document library â finds precedents, past advice, and internal policies in seconds.',
+    desc:'Semantic search across your entire document library — finds precedents, past advice, and internal policies in seconds.',
   },
 };
 
@@ -1118,7 +1118,7 @@ function SurveySection() {
                 onBlur={e => e.target.style.borderColor = C.borderStrong}
               />
               <p style={{fontSize:12, color:C.textFaint, marginTop:12, lineHeight:1.6}}>
-                Your dashboard appears instantly on screen. We'll also email a copy. No spam â just your results and a brief follow-up.
+                Your dashboard appears instantly on screen. We'll also email a copy. No spam — just your results and a brief follow-up.
               </p>
             </div>
           ) : (
@@ -1142,7 +1142,7 @@ function SurveySection() {
                         display:'flex', alignItems:'center', justifyContent:'center',
                         transition:'all 0.15s', flexShrink:0,
                       }}>
-                        {isSelected && <span style={{color:'#fff', fontSize:12, lineHeight:1}}>â</span>}
+                        {isSelected && <span style={{color:'#fff', fontSize:12, lineHeight:1}}>✓</span>}
                       </div>
                       <div>
                         <div style={{display:'flex', alignItems:'center', gap:8}}>
@@ -1167,7 +1167,7 @@ function SurveySection() {
               padding:'10px 20px', borderRadius:8, border:`1px solid ${C.border}`, background:'transparent',
               fontSize:14, color: step > 0 ? C.textBody : C.textFaint, cursor: step > 0 ? 'pointer' : 'default',
               fontFamily:'Inter, sans-serif', transition:'all 0.15s',
-            }}>â Back</button>
+            }}>← Back</button>
           <button onClick={handleNext} disabled={!canProceed()}
             style={{
               padding:'12px 28px', borderRadius:8, border:'none',
@@ -1175,17 +1175,17 @@ function SurveySection() {
               fontSize:14, fontWeight:600, color:'#fff', cursor:canProceed() ? 'pointer' : 'default',
               fontFamily:'Inter, sans-serif', transition:'all 0.15s',
               boxShadow:canProceed() ? `0 2px 12px ${C.blueGlow}` : 'none',
-            }}>{step === totalSteps - 1 ? 'View My Dashboard â' : 'Next â'}</button>
+            }}>{step === totalSteps - 1 ? 'View My Dashboard →' : 'Next →'}</button>
         </div>
       </div>
     </section>
   );
 }
 
-/* âââ Report Dashboard (4 Blocks) âââ */
+/* ─── Report Dashboard (4 Blocks) ─── */
 function ReportDashboard({ answers }) {
   const selectedWorkflows = answers.workflows || [];
-  const sizeMap = {'1â14':10,'15â50':35,'51â150':90,'150+':200};
+  const sizeMap = {'1–14':10,'15–50':35,'51–150':90,'150+':200};
   const teamSize = sizeMap[answers.size] || 35;
   const maturityMult = {
     'Not using it yet':1.0,
@@ -1229,10 +1229,10 @@ function ReportDashboard({ answers }) {
 
   /* Deployment recommendation */
   const deployRec = isLegacy
-    ? {title:'On-Premise (Sovereign) Deployment', desc:'We recommend local LLM infrastructure to ensure strict data privacy. Your data never leaves your network â ideal for regulated industries handling sensitive client information.', icon:'ð'}
+    ? {title:'On-Premise (Sovereign) Deployment', desc:'We recommend local LLM infrastructure to ensure strict data privacy. Your data never leaves your network — ideal for regulated industries handling sensitive client information.', icon:'🔒'}
     : isCloud
-    ? {title:'Cloud-Native Deployment', desc:`Based on your ${answers.techProfile === 'Cloud-native' ? 'Microsoft 365 / Google Workspace' : 'hybrid'} stack, we recommend a cloud-native deployment integrating directly into your existing environment. Fastest path to production.`, icon:'âï¸'}
-    : {title:'Hybrid Deployment', desc:'A hybrid architecture connecting your cloud tools with on-premise systems. We bridge the gap so your AI skills work across both environments seamlessly.', icon:'ð'};
+    ? {title:'Cloud-Native Deployment', desc:`Based on your ${answers.techProfile === 'Cloud-native' ? 'Microsoft 365 / Google Workspace' : 'hybrid'} stack, we recommend a cloud-native deployment integrating directly into your existing environment. Fastest path to production.`, icon:'☁️'}
+    : {title:'Hybrid Deployment', desc:'A hybrid architecture connecting your cloud tools with on-premise systems. We bridge the gap so your AI skills work across both environments seamlessly.', icon:'🔄'};
 
   return (
     <section id="assess" style={{padding:'80px 48px 120px', background:C.bg}} className="grid-bg">
@@ -1244,12 +1244,12 @@ function ReportDashboard({ answers }) {
               <div style={{width:8, height:8, borderRadius:'50%', background:C.green}} />
               <span style={{fontSize:14, fontWeight:700, color:C.textPrimary, fontFamily:heading}}>Your Firm's AI Deployment Blueprint</span>
             </div>
-            <span style={{fontSize:11, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>{answers.industry} Â· {answers.size} STAFF</span>
+            <span style={{fontSize:11, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>{answers.industry} · {answers.size} STAFF</span>
           </div>
 
-          {/* ââ BLOCK 1: ROI Projection ââ */}
+          {/* ── BLOCK 1: ROI Projection ── */}
           <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
-            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>01 Â· ROI PROJECTION</div>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>01 · ROI PROJECTION</div>
             <div className="kpi-row" style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:0}}>
               <div style={{padding:'0 20px 0 0'}}>
                 <div style={{fontSize:10, fontWeight:600, color:C.textFaint, fontFamily:mono, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:8}}>Capacity Repatriated</div>
@@ -1275,14 +1275,14 @@ function ReportDashboard({ answers }) {
             </div>
           </div>
 
-          {/* ââ BLOCK 2: Skill Sprint Recommendations ââ */}
+          {/* ── BLOCK 2: Skill Sprint Recommendations ── */}
           <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
-            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>02 Â· YOUR CUSTOM SKILL SPRINT</div>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>02 · YOUR CUSTOM SKILL SPRINT</div>
             <div style={{display:'flex', flexDirection:'column', gap:12}}>
               {skills.map((s,i) => (
                 <div key={s.file} style={{display:'flex', gap:16, alignItems:'flex-start', padding:'18px 20px', background:C.bg, borderRadius:10, border:`1px solid ${C.border}`}}>
                   <div style={{width:40, height:40, borderRadius:8, background:'rgba(30,58,138,0.06)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
-                    <span style={{fontFamily:mono, fontSize:13, fontWeight:700, color:C.deepBlue}}>ð</span>
+                    <span style={{fontFamily:mono, fontSize:13, fontWeight:700, color:C.deepBlue}}>📄</span>
                   </div>
                   <div style={{flex:1}}>
                     <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4, flexWrap:'wrap', gap:6}}>
@@ -1307,9 +1307,9 @@ function ReportDashboard({ answers }) {
             </div>
           </div>
 
-          {/* ââ BLOCK 3: Deployment Architecture ââ */}
+          {/* ── BLOCK 3: Deployment Architecture ── */}
           <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
-            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>03 Â· DEPLOYMENT ARCHITECTURE</div>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>03 · DEPLOYMENT ARCHITECTURE</div>
             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16}} className="two-col">
               <div style={{padding:'20px', background:C.bg, borderRadius:10, border:`1px solid ${C.border}`}}>
                 <div style={{fontSize:20, marginBottom:8}}>{deployRec.icon}</div>
@@ -1331,11 +1331,11 @@ function ReportDashboard({ answers }) {
             </div>
           </div>
 
-          {/* ââ BLOCK 4: Grant Funding Alert ââ */}
+          {/* ── BLOCK 4: Grant Funding Alert ── */}
           <div style={{padding:'28px', borderBottom:`1px solid ${C.border}`, background:'rgba(34,197,94,0.03)'}}>
-            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.green, letterSpacing:'0.1em', marginBottom:14}}>04 Â· GRANT FUNDING ALERT</div>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.green, letterSpacing:'0.1em', marginBottom:14}}>04 · GRANT FUNDING ALERT</div>
             <div style={{display:'flex', gap:16, alignItems:'flex-start'}}>
-              <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:20}}>ð¦ðº</div>
+              <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:20}}>🇦🇺</div>
               <div>
                 <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:6}}>Did you know? The Australian Government's AI Adopt Program provides grants that can cover up to 50% of eligible AI implementation costs.</div>
                 <p style={{fontSize:14, color:C.textBody, lineHeight:1.65}}>
@@ -1357,7 +1357,7 @@ function ReportDashboard({ answers }) {
                 <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>Sent to {answers.email}</span>
               </div>
             </div>
-            <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY Â· AUTOMATION AUDIT</span>
+            <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY · AUTOMATION AUDIT</span>
           </div>
         </div>
 
@@ -1367,9 +1367,9 @@ function ReportDashboard({ answers }) {
             Book your comprehensive 1-Week Audit.
           </h3>
           <p style={{fontSize:15, color:C.textBody, maxWidth:560, margin:'0 auto 28px', lineHeight:1.7}}>
-            Let's move from AI-curious to fully AI-enabled. In our 1-week Audit, we'll map your specific workflows, conduct a time-and-motion study, and deliver a ranked roadmap of automations â before any implementation spend.
+            Let's move from AI-curious to fully AI-enabled. In our 1-week Audit, we'll map your specific workflows, conduct a time-and-motion study, and deliver a ranked roadmap of automations — before any implementation spend.
           </p>
-          <a href={`mailto:simon@unlockcapital.ai?subject=AI%20Deploy%20â%20Audit%20Request%20(${encodeURIComponent(answers.industry || 'General')})&body=${encodeURIComponent(`Hi Simon,\n\nI completed the AI Readiness Assessment.\n\nFirm: ${answers.industry || 'N/A'}\nSize: ${answers.size || 'N/A'}\nTech: ${answers.techProfile || 'N/A'}\nPriority workflows: ${(answers.workflows || []).join(', ')}\nCurrent AI adoption: ${answers.maturity || 'N/A'}\n\nI'm interested in booking the 1-Week Operational Audit.\n\nBest regards`)}`}
+          <a href={`mailto:simon@unlockcapital.ai?subject=AI%20Deploy%20—%20Audit%20Request%20(${encodeURIComponent(answers.industry || 'General')})&body=${encodeURIComponent(`Hi Simon,\n\nI completed the AI Readiness Assessment.\n\nFirm: ${answers.industry || 'N/A'}\nSize: ${answers.size || 'N/A'}\nTech: ${answers.techProfile || 'N/A'}\nPriority workflows: ${(answers.workflows || []).join(', ')}\nCurrent AI adoption: ${answers.maturity || 'N/A'}\n\nI'm interested in booking the 1-Week Operational Audit.\n\nBest regards`)}`}
             style={{
               display:'inline-flex', alignItems:'center', gap:8,
               padding:'16px 36px', borderRadius:8, background:C.deepBlue, color:C.white,
@@ -1378,7 +1378,7 @@ function ReportDashboard({ answers }) {
             }}
             onMouseEnter={e => {e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 6px 28px ${C.blueGlow}`;}}
             onMouseLeave={e => {e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow=`0 4px 20px ${C.blueGlow}`;}}
-          >Book a 1-Week Audit <span style={{fontSize:18}}>â</span></a>
+          >Book a 1-Week Audit <span style={{fontSize:18}}>→</span></a>
           <div style={{marginTop:16}}>
             <button onClick={() => window.location.reload()} style={{
               background:'none', border:'none', fontSize:13, color:C.textFaint, cursor:'pointer',
@@ -1391,7 +1391,7 @@ function ReportDashboard({ answers }) {
   );
 }
 
-/* âââ Footer âââ */
+/* ─── Footer ─── */
 function Footer() {
   return (
     <footer style={{padding:'28px 48px', borderTop:`1px solid ${C.border}`, background:C.bg}}>
@@ -1399,7 +1399,7 @@ function Footer() {
         <div style={{display:'flex', alignItems:'center', gap:8}}>
           <div style={{width:5, height:5, background:C.blue, borderRadius:1}} />
           <span style={{fontSize:13, fontWeight:600, color:C.textBody}}>AI Deploy</span>
-          <span style={{fontSize:12, color:C.textFaint}}>Â· Intelligent Operations</span>
+          <span style={{fontSize:12, color:C.textFaint}}>· Intelligent Operations</span>
         </div>
         <div style={{display:'flex', alignItems:'center', gap:20}}>
           <span style={{fontSize:12, color:C.textFaint, fontFamily:mono}}>EST. 2026</span>
@@ -1411,7 +1411,7 @@ function Footer() {
   );
 }
 
-/* âââ App âââ */
+/* ─── App ─── */
 function App() {
   return (
     <div style={{position:'relative', zIndex:1}}>
