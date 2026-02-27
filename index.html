@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Deploy â Intelligent Operations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #F8FAFC; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(15,23,42,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,23,42,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .reveal { opacity:0; transform:translateY(20px); transition: opacity 0.55s cubic-bezier(0.32,0.72,0,1), transform 0.55s cubic-bezier(0.32,0.72,0,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .d1{transition-delay:0.05s} .d2{transition-delay:0.1s} .d3{transition-delay:0.15s}
+  .d4{transition-delay:0.2s} .d5{transition-delay:0.25s} .d6{transition-delay:0.3s}
+  .d7{transition-delay:0.35s} .d8{transition-delay:0.4s}
+
+  .hero-enter { opacity:0; transform:translateY(16px); animation: heroIn 0.65s cubic-bezier(0.32,0.72,0,1) forwards; }
+  .hero-d1{animation-delay:0.1s} .hero-d2{animation-delay:0.22s} .hero-d3{animation-delay:0.38s}
+  .hero-d4{animation-delay:0.52s} .hero-d5{animation-delay:0.7s}
+  @keyframes heroIn { to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @keyframes processSweep { 0%{transform:translateX(-100%)} 50%{transform:translateX(100%)} 50.01%,100%{transform:translateX(-100%)} }
+  @keyframes barGrow { from { width: 0%; } }
+  @keyframes orbitPulse { 0%,100%{transform:scale(1);opacity:0.7} 50%{transform:scale(1.15);opacity:1} }
+  @keyframes flowDot { 0%{offset-distance:0%} 100%{offset-distance:100%} }
+  @keyframes slideRight { from{transform:translateX(-8px);opacity:0} to{transform:translateX(0);opacity:1} }
+  @keyframes fadeScale { from{transform:scale(0.92);opacity:0} to{transform:scale(1);opacity:1} }
+  @keyframes sliderGlow { 0%,100%{box-shadow:0 0 12px rgba(30,58,138,0.2)} 50%{box-shadow:0 0 24px rgba(30,58,138,0.4)} }
+  .counter-value { font-variant-numeric: tabular-nums; }
+
+  .glass-card {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(30,58,138,0.08);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .survey-option {
+    cursor: pointer;
+    padding: 14px 18px;
+    border: 1px solid rgba(15,23,42,0.08);
+    border-radius: 10px;
+    background: #fff;
+    transition: all 0.15s ease;
+    text-align: left;
+  }
+  .survey-option:hover { border-color: rgba(30,58,138,0.2); background: rgba(30,58,138,0.02); }
+  .survey-option.selected { border-color: #1E3A8A; background: rgba(30,58,138,0.05); box-shadow: 0 0 0 1px #1E3A8A; }
+  .survey-option-multi.selected { border-color: #3B82F6; background: rgba(59,130,246,0.06); box-shadow: 0 0 0 1px #3B82F6; }
+
+  .shift-card { transition: all 0.3s ease; }
+  .shift-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+
+  .workflow-card { transition: all 0.25s ease; }
+  .workflow-card:hover { transform: translateY(-2px); border-color: rgba(30,58,138,0.2); }
+
+  .skill-tile { transition: all 0.2s ease; }
+  .skill-tile:hover { transform: translateY(-2px); border-color: rgba(30,58,138,0.15); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+  .deploy-card { transition: all 0.25s ease; }
+  .deploy-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+
+  @media (max-width:1024px) {
+    .services-grid{grid-template-columns:1fr 1fr!important}
+    .arch-grid{grid-template-columns:1fr 1fr 1fr!important}
+    .agent-grid{grid-template-columns:1fr 1fr!important}
+    .kpi-row{grid-template-columns:1fr 1fr 1fr!important}
+    .two-col{grid-template-columns:1fr!important}
+    .three-col{grid-template-columns:1fr 1fr!important}
+    .skill-grid{grid-template-columns:1fr 1fr!important}
+    .router-visual{flex-direction:column!important}
+    section{padding-left:32px!important;padding-right:32px!important}
+    nav{padding-left:24px!important;padding-right:24px!important}
+    footer{padding-left:24px!important;padding-right:24px!important}
+  }
+  @media (max-width:768px) {
+    .services-grid{grid-template-columns:1fr!important}
+    .arch-grid{grid-template-columns:1fr 1fr!important}
+    .agent-grid{grid-template-columns:1fr!important}
+    .kpi-row{grid-template-columns:1fr!important}
+    .kpi-card-border{border-left:none!important;border-top:1px solid rgba(15,23,42,0.06)}
+    .three-col{grid-template-columns:1fr!important}
+    .skill-grid{grid-template-columns:1fr!important}
+    section{padding-left:20px!important;padding-right:20px!important}
+    .footer-inner{flex-direction:column!important;gap:12px!important;align-items:flex-start!important}
+    .nav-links{display:none!important}
+    .survey-grid{grid-template-columns:1fr!important}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* âââ Hooks âââ */
+function useInView(ref, options = {}) {
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setIsInView(true); if (options.once !== false) observer.disconnect(); }
+    }, { threshold: 0.1, rootMargin: options.margin || '-60px', ...options });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return isInView;
+}
+
+function Reveal({ children, delay, direction, className = '' }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const cls = 'reveal';
+  const dCls = delay ? `d${delay}` : '';
+  return <div ref={ref} className={`${cls} ${dCls} ${inView ? 'visible' : ''} ${className}`}>{children}</div>;
+}
+
+/* âââ Tokens âââ */
+const C = {
+  bg: '#F8FAFC', white: '#FFFFFF', subtle: '#F1F5F9',
+  deepBlue: '#1E3A8A', blue: '#3B82F6', lightBlue: '#93C5FD', paleBlue: '#DBEAFE',
+  blueTint: 'rgba(59,130,246,0.06)', blueGlow: 'rgba(30,58,138,0.12)',
+  deepSlate: '#0F172A', charcoal: '#1E293B', slate600: '#475569', slate400: '#94A3B8', slate300: '#CBD5E1',
+  textPrimary: '#0F172A', textBody: '#334155', textMuted: '#64748B', textFaint: '#94A3B8',
+  border: 'rgba(15,23,42,0.06)', borderStrong: 'rgba(15,23,42,0.10)',
+  green: '#22C55E', greenTint: 'rgba(34,197,94,0.08)',
+  amber: '#F59E0B', amberTint: 'rgba(245,158,11,0.08)',
+  red: '#EF4444', redTint: 'rgba(239,68,68,0.06)',
+  purple: '#7C3AED', purpleTint: 'rgba(124,58,237,0.06)',
+  teal: '#0D9488', tealTint: 'rgba(13,148,136,0.06)',
+  orange: '#EA580C', orangeTint: 'rgba(234,88,12,0.06)',
+};
+const mono = "'JetBrains Mono', monospace";
+const heading = "'Inter', system-ui, sans-serif";
+
+/* âââ Navigation âââ */
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <nav style={{
+      position:'fixed', top:0, left:0, right:0, zIndex:100, padding:'0 48px', height:64,
+      display:'flex', alignItems:'center', justifyContent:'space-between',
+      background: scrolled ? 'rgba(248,250,252,0.92)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(20px) saturate(1.3)' : 'none',
+      borderBottom: scrolled ? `1px solid ${C.border}` : '1px solid transparent',
+      transition:'all 0.3s ease',
+    }}>
+      <div style={{display:'flex', alignItems:'center', gap:10}}>
+        <div style={{width:7, height:7, background:C.blue, borderRadius:2}} />
+        <span style={{fontFamily:heading, fontWeight:700, fontSize:14, letterSpacing:'-0.01em', color:C.textPrimary}}>AI DEPLOY</span>
+      </div>
+      <div className="nav-links" style={{display:'flex', alignItems:'center', gap:32}}>
+        {['Architecture','Router','Value','Process'].map(item => (
+          <a key={item} href={`#${item.toLowerCase()}`} style={{
+            fontSize:13, color:C.textMuted, textDecoration:'none', fontWeight:500, letterSpacing:'0.01em', transition:'color 0.2s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = C.textPrimary}
+          onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
+          >{item}</a>
+        ))}
+        <a href="#assess" style={{
+          fontSize:13, fontWeight:600, color:C.white, background:C.deepBlue,
+          padding:'8px 20px', borderRadius:6, textDecoration:'none', transition:'all 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background='#1E40AF'}
+        onMouseLeave={e => e.currentTarget.style.background=C.deepBlue}
+        >Free Assessment</a>
+      </div>
+    </nav>
+  );
+}
+
+/* âââ Hero (no NetworkViz) âââ */
+function Hero() {
+  return (
+    <section className="grid-bg" style={{
+      minHeight:'100vh', display:'flex', alignItems:'center',
+      padding:'120px 48px 80px', position:'relative', background:C.bg,
+    }}>
+      <div style={{position:'absolute', top:'-15%', right:'-5%', width:600, height:600,
+        background:'radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%)', pointerEvents:'none'}} />
+      <div style={{position:'absolute', bottom:'-10%', left:'-5%', width:500, height:500,
+        background:'radial-gradient(circle, rgba(30,58,138,0.04) 0%, transparent 70%)', pointerEvents:'none'}} />
+      <div style={{maxWidth:720, margin:'0 auto', width:'100%', position:'relative', zIndex:1, textAlign:'center'}}>
+        <div className="hero-enter hero-d1" style={{
+          display:'inline-block', fontFamily:mono, fontSize:11, fontWeight:500, color:C.textFaint,
+          letterSpacing:'0.1em', marginBottom:24, padding:'5px 12px', borderRadius:4,
+          background:'rgba(30,58,138,0.04)', border:'1px solid rgba(30,58,138,0.08)',
+        }}>EST. 2026 Â· SYDNEY</div>
+        <h1 className="hero-enter hero-d2" style={{
+          fontFamily:heading, fontSize:'clamp(48px, 6vw, 72px)', fontWeight:800,
+          lineHeight:1.05, letterSpacing:'-0.04em', color:C.textPrimary, marginBottom:20,
+        }}>
+          Intelligent<br/>
+          <span style={{color:C.deepBlue}}>Operations.</span>
+        </h1>
+        <p className="hero-enter hero-d3" style={{
+          fontFamily:heading, fontSize:'clamp(18px, 2.2vw, 22px)', lineHeight:1.5, color:C.textBody, maxWidth:560, margin:'0 auto 14px', fontWeight:400,
+        }}>
+          The architectural layer for the automated firm.
+        </p>
+        <p className="hero-enter hero-d4" style={{
+          fontSize:15, lineHeight:1.7, color:C.textMuted, maxWidth:520, margin:'0 auto 40px',
+        }}>
+          We deploy AI that executes â not experiments. From workflow audit to managed operations, we take professional services firms from pilot to production.
+        </p>
+        <div className="hero-enter hero-d5" style={{display:'flex', alignItems:'center', gap:16, justifyContent:'center'}}>
+          <a href="#assess" style={{
+            display:'inline-flex', alignItems:'center', gap:8,
+            padding:'16px 32px', borderRadius:8, background:C.deepBlue, color:C.white,
+            fontWeight:600, fontSize:16, textDecoration:'none',
+            boxShadow:`0 2px 12px ${C.blueGlow}`, transition:'all 0.2s',
+          }}
+          onMouseEnter={e => {e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow=`0 4px 20px ${C.blueGlow}`;}}
+          onMouseLeave={e => {e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow=`0 2px 12px ${C.blueGlow}`;}}
+          >Get Your Free Assessment <span style={{fontSize:16}}>â</span></a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Problem Section â Full-width animated dashboard chart âââ */
+function ProblemSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const [animPhase, setAnimPhase] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const t1 = setTimeout(() => setAnimPhase(1), 200);
+    const t2 = setTimeout(() => setAnimPhase(2), 800);
+    const t3 = setTimeout(() => setAnimPhase(3), 1400);
+    const t4 = setTimeout(() => setAnimPhase(4), 2000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, [inView]);
+
+  const years = ['2022','2023','2024','2025','2026'];
+  const capabilityH = [85, 72, 52, 28, 8];
+  const executionH = [88, 84, 78, 74, 70];
+  const barW = 100 / years.length;
+
+  return (
+    <section style={{padding:'120px 48px', background:C.white, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{maxWidth:640, marginBottom:48}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>The Problem</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>The capabilityâexecution divergence.</h2>
+            <p style={{fontSize:15, color:C.textBody, lineHeight:1.7}}>
+              AI capability is advancing exponentially. Organisational execution is not. The result: a widening opportunity deficit that compounds every quarter you delay.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
+          <div ref={ref} style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:14, overflow:'hidden', boxShadow:'0 2px 8px rgba(0,0,0,0.04)'}}>
+            {/* Dashboard header bar */}
+            <div style={{padding:'14px 28px', background:C.subtle, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+              <div style={{display:'flex', alignItems:'center', gap:10}}>
+                <div style={{width:7, height:7, borderRadius:'50%', background:C.red, animation: inView ? 'pulse 2s infinite' : 'none'}} />
+                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>Capability vs Execution â Industry Benchmark</span>
+              </div>
+              <div style={{display:'flex', alignItems:'center', gap:16}}>
+                <span style={{fontSize:36, fontWeight:800, color:C.deepBlue, fontFamily:mono, lineHeight:1}}>72%</span>
+                <span style={{fontSize:12, color:C.textMuted, maxWidth:120}}>of AI pilots never reach production</span>
+              </div>
+            </div>
+
+            {/* Chart area */}
+            <div style={{padding:'32px 28px 20px', position:'relative'}}>
+              <div style={{display:'flex', gap:24, marginBottom:20}}>
+                <div style={{display:'flex', alignItems:'center', gap:6}}>
+                  <div style={{width:12, height:3, borderRadius:2, background:C.blue}} />
+                  <span style={{fontSize:11, fontFamily:mono, color:C.textMuted}}>AI Capability</span>
+                </div>
+                <div style={{display:'flex', alignItems:'center', gap:6}}>
+                  <div style={{width:12, height:3, borderRadius:2, background:C.slate300, opacity:0.6}} />
+                  <span style={{fontSize:11, fontFamily:mono, color:C.textMuted}}>Org. Execution</span>
+                </div>
+                <div style={{display:'flex', alignItems:'center', gap:6}}>
+                  <div style={{width:12, height:8, borderRadius:2, background:C.deepBlue, opacity:0.08}} />
+                  <span style={{fontSize:11, fontFamily:mono, color:C.textMuted}}>Opportunity Deficit</span>
+                </div>
+              </div>
+
+              <div style={{position:'relative', height:280, borderLeft:`1px solid ${C.border}`, borderBottom:`1px solid ${C.border}`}}>
+                {/* Y-axis labels */}
+                {['High','','','','Low'].map((l,i) => (
+                  <div key={i} style={{position:'absolute', left:-36, top:`${i*25}%`, fontSize:9, fontFamily:mono, color:C.textFaint, transform:'translateY(-50%)'}}>{l}</div>
+                ))}
+                {/* Gridlines */}
+                {[0,25,50,75].map(p => (
+                  <div key={p} style={{position:'absolute', left:0, right:0, top:`${p}%`, height:1, background:C.border}} />
+                ))}
+
+                <svg width="100%" height="100%" viewBox="0 0 1000 280" preserveAspectRatio="none" style={{position:'absolute', inset:0}}>
+                  {/* Gap fill area */}
+                  <path d={`M${100},${capabilityH[0]*2.8} C${300},${capabilityH[1]*2.8} ${500},${capabilityH[2]*2.8} ${700},${capabilityH[3]*2.8} L${900},${capabilityH[4]*2.8} L${900},${executionH[4]*2.8} L${700},${executionH[3]*2.8} C${500},${executionH[2]*2.8} ${300},${executionH[1]*2.8} ${100},${executionH[0]*2.8} Z`}
+                    fill={C.deepBlue} opacity={animPhase >= 3 ? 0.06 : 0} style={{transition:'opacity 0.8s ease'}}/>
+                  {/* Capability line */}
+                  <path d={`M100,${capabilityH[0]*2.8} C300,${capabilityH[1]*2.8} 500,${capabilityH[2]*2.8} 700,${capabilityH[3]*2.8} L900,${capabilityH[4]*2.8}`}
+                    fill="none" stroke={C.blue} strokeWidth="3"
+                    strokeDasharray="2000" strokeDashoffset={animPhase >= 1 ? 0 : 2000}
+                    style={{transition:'stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)'}}/>
+                  {/* Execution line */}
+                  <path d={`M100,${executionH[0]*2.8} C300,${executionH[1]*2.8} 500,${executionH[2]*2.8} 700,${executionH[3]*2.8} L900,${executionH[4]*2.8}`}
+                    fill="none" stroke={C.slate300} strokeWidth="2.5" strokeDasharray="6,4"
+                    opacity={animPhase >= 2 ? 0.6 : 0} style={{transition:'opacity 0.6s ease'}}/>
+                  {/* Data points */}
+                  {years.map((y,i) => {
+                    const x = 100 + i * 200;
+                    return (
+                      <React.Fragment key={y}>
+                        <circle cx={x} cy={capabilityH[i]*2.8} r={animPhase >= 1 ? 5 : 0} fill={C.blue}
+                          style={{transition:`r 0.3s ease ${i*0.15}s`}}/>
+                        <circle cx={x} cy={executionH[i]*2.8} r={animPhase >= 2 ? 4 : 0} fill={C.slate400}
+                          style={{transition:`r 0.3s ease ${i*0.15}s`}}/>
+                      </React.Fragment>
+                    );
+                  })}
+                </svg>
+
+                {/* Deficit label */}
+                <div style={{
+                  position:'absolute', top:'28%', right:'12%',
+                  fontSize:13, fontWeight:700, color:C.deepBlue, fontFamily:heading,
+                  background:'rgba(30,58,138,0.06)', padding:'8px 16px', borderRadius:6,
+                  border:'1px solid rgba(30,58,138,0.12)',
+                  opacity:animPhase >= 4 ? 1 : 0, transform:animPhase >= 4 ? 'translateY(0)' : 'translateY(8px)',
+                  transition:'all 0.5s ease',
+                }}>
+                  â OPPORTUNITY DEFICIT
+                </div>
+
+                {/* X-axis */}
+                <div style={{position:'absolute', bottom:-24, left:0, right:0, display:'flex', justifyContent:'space-around'}}>
+                  {years.map(y => (
+                    <span key={y} style={{fontSize:11, fontFamily:mono, color:C.textFaint}}>{y}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Status bar */}
+            <div style={{padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', background:C.subtle, borderTop:`1px solid ${C.border}`, marginTop:12}}>
+              <div style={{display:'flex', gap:20}}>
+                {[
+                  {label:'Gap Growth', status:'+18% QoQ', color:C.red},
+                  {label:'Firms Affected', status:'72% stalled', color:C.amber},
+                  {label:'Window', status:'Closing fast', color:C.deepBlue},
+                ].map(item => (
+                  <div key={item.label} style={{display:'flex', alignItems:'center', gap:6}}>
+                    <div style={{width:5, height:5, borderRadius:'50%', background:item.color}} />
+                    <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>{item.label}:</span>
+                    <span style={{fontSize:11, color:C.textBody, fontFamily:mono, fontWeight:600}}>{item.status}</span>
+                  </div>
+                ))}
+              </div>
+              <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY Â· INDUSTRY ANALYSIS</span>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Transformation Section â Full-width dynamic cards + visual workflows âââ */
+function TransformationSection() {
+  const workflows = [
+    { name:'Client Intake', steps:['Email received','Extract ABN & details','Validate against ASIC','Pre-fill CRM','Generate engagement letter','Send for e-signature'], icon:'ð§', color:C.deepBlue, time:'From 2 hrs â 5 min' },
+    { name:'Compliance Check', steps:['New matter opened','Cross-ref regulatory DB','Run AML screening','Score risk level','Generate report','Route for approval'], icon:'ð¡ï¸', color:C.teal, time:'From 4 hrs â 12 min' },
+    { name:'Report Generation', steps:['Schedule trigger','Pull data from 6 sources','Normalise & analyse','Build narrative','Format & brand','Distribute to stakeholders'], icon:'ð', color:C.purple, time:'From 6 hrs â 8 min' },
+  ];
+
+  return (
+    <section style={{padding:'120px 48px', background:C.bg, borderTop:`1px solid ${C.border}`}} className="grid-bg">
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{maxWidth:640, marginBottom:56}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>The Shift</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>From tooling to transformation.</h2>
+            <p style={{fontSize:15, color:C.textBody, lineHeight:1.7}}>
+              We transition your firm from buying seats for chatbots to deploying agents that execute workflows without human prompting.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Reactive vs Proactive â full-width */}
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:2, borderRadius:16, overflow:'hidden', marginBottom:48, border:`1px solid ${C.border}`}} className="two-col">
+          <Reveal delay={1}>
+            <div className="shift-card" style={{padding:'48px 40px', background:C.white, minHeight:320, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden'}}>
+              <div style={{position:'absolute', top:0, left:0, right:0, height:4, background:`linear-gradient(90deg, ${C.slate300}, transparent)`}} />
+              <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:20}}>
+                <div style={{width:48, height:48, borderRadius:12, background:C.redTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>â³</div>
+                <div>
+                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.textFaint, letterSpacing:'0.1em'}}>BEFORE Â· ASSISTED WORK</div>
+                  <div style={{fontFamily:heading, fontSize:28, fontWeight:800, color:C.textPrimary, letterSpacing:'-0.02em'}}>Reactive</div>
+                </div>
+              </div>
+              <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, marginBottom:24, flex:1}}>
+                Staff prompt a chatbot. One question at a time. No memory. No integration. No compounding value. Every interaction starts from zero.
+              </p>
+              <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+                {[{t:'Manual prompts',i:'âï¸'},{t:'Single tasks',i:'1ï¸â£'},{t:'No integration',i:'ð'},{t:'Per-seat cost',i:'ð°'}].map(({t,i}) => (
+                  <span key={t} style={{fontSize:12, padding:'8px 14px', borderRadius:8, background:'rgba(239,68,68,0.04)', border:'1px solid rgba(239,68,68,0.1)', color:C.textMuted, fontWeight:500, display:'flex', alignItems:'center', gap:6}}>
+                    <span style={{fontSize:14}}>{i}</span>{t}
+                  </span>
+                ))}
+              </div>
+              {/* Visual bar showing low efficiency */}
+              <div style={{marginTop:24}}>
+                <div style={{display:'flex', justifyContent:'space-between', marginBottom:6}}>
+                  <span style={{fontSize:10, fontFamily:mono, color:C.textFaint}}>OPERATIONAL EFFICIENCY</span>
+                  <span style={{fontSize:10, fontFamily:mono, color:C.red, fontWeight:700}}>~15%</span>
+                </div>
+                <div style={{height:6, background:C.subtle, borderRadius:3, overflow:'hidden'}}>
+                  <div style={{width:'15%', height:'100%', borderRadius:3, background:`linear-gradient(90deg, ${C.red}, ${C.amber})`}} />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={2}>
+            <div className="shift-card" style={{padding:'48px 40px', background:C.white, minHeight:320, display:'flex', flexDirection:'column', position:'relative', overflow:'hidden'}}>
+              <div style={{position:'absolute', top:0, left:0, right:0, height:4, background:`linear-gradient(90deg, ${C.deepBlue}, ${C.blue})`}} />
+              <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:20}}>
+                <div style={{width:48, height:48, borderRadius:12, background:'rgba(30,58,138,0.06)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>â¡</div>
+                <div>
+                  <div style={{fontSize:10, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em'}}>AFTER Â· AGENTIC WORK</div>
+                  <div style={{fontFamily:heading, fontSize:28, fontWeight:800, color:C.textPrimary, letterSpacing:'-0.02em'}}>Proactive</div>
+                </div>
+              </div>
+              <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, marginBottom:24, flex:1}}>
+                Agents execute entire workflows. Scheduled triggers. System memory. Cross-platform orchestration. Every skill makes the next one more powerful.
+              </p>
+              <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+                {[{t:'Autonomous execution',i:'ð¤'},{t:'Workflow chains',i:'ð'},{t:'Full integration',i:'ð'},{t:'ROI-positive',i:'ð'}].map(({t,i}) => (
+                  <span key={t} style={{fontSize:12, padding:'8px 14px', borderRadius:8, background:'rgba(30,58,138,0.04)', border:'1px solid rgba(30,58,138,0.1)', color:C.deepBlue, fontWeight:500, display:'flex', alignItems:'center', gap:6}}>
+                    <span style={{fontSize:14}}>{i}</span>{t}
+                  </span>
+                ))}
+              </div>
+              <div style={{marginTop:24}}>
+                <div style={{display:'flex', justifyContent:'space-between', marginBottom:6}}>
+                  <span style={{fontSize:10, fontFamily:mono, color:C.textFaint}}>OPERATIONAL EFFICIENCY</span>
+                  <span style={{fontSize:10, fontFamily:mono, color:C.green, fontWeight:700}}>~92%</span>
+                </div>
+                <div style={{height:6, background:C.subtle, borderRadius:3, overflow:'hidden'}}>
+                  <div style={{width:'92%', height:'100%', borderRadius:3, background:`linear-gradient(90deg, ${C.deepBlue}, ${C.green})`}} />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Agentic Workflows â visual pipeline cards */}
+        <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:20}}>Example Agentic Workflows</div>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16}} className="three-col">
+          {workflows.map((wf, wi) => (
+            <Reveal key={wf.name} delay={wi+3}>
+              <div className="workflow-card" style={{background:C.white, borderRadius:14, border:`1px solid ${C.border}`, overflow:'hidden', height:'100%'}}>
+                <div style={{padding:'20px 24px 16px', borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                  <div style={{display:'flex', alignItems:'center', gap:10}}>
+                    <span style={{fontSize:24}}>{wf.icon}</span>
+                    <div>
+                      <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary}}>{wf.name}</div>
+                      <div style={{fontSize:11, fontFamily:mono, color:C.green, fontWeight:600}}>{wf.time}</div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{padding:'16px 24px 20px'}}>
+                  {wf.steps.map((s,si) => (
+                    <div key={si} style={{display:'flex', alignItems:'flex-start', gap:10, marginBottom:si < wf.steps.length-1 ? 0 : 0}}>
+                      <div style={{display:'flex', flexDirection:'column', alignItems:'center', flexShrink:0}}>
+                        <div style={{
+                          width:24, height:24, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center',
+                          background: si === wf.steps.length-1 ? wf.color : 'transparent',
+                          border: si === wf.steps.length-1 ? 'none' : `2px solid ${C.slate300}`,
+                          fontSize:10, fontWeight:700, color: si === wf.steps.length-1 ? '#fff' : C.textFaint, fontFamily:mono,
+                        }}>{si+1}</div>
+                        {si < wf.steps.length-1 && <div style={{width:1.5, height:16, background:C.slate300, opacity:0.4}} />}
+                      </div>
+                      <span style={{fontSize:13, color: si === wf.steps.length-1 ? C.textPrimary : C.textBody, fontWeight: si === wf.steps.length-1 ? 600 : 400, lineHeight:1.4, paddingTop:3}}>{s}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Architecture Section âââ */
+function ArchitectureSection() {
+  const phases = [
+    { num:'01', name:'Audit', sub:'Friction Map & ROI', desc:'Map every workflow. Score automation potential. Deliver projected returns.' },
+    { num:'02', name:'Blueprint', sub:'Strategy & Design', desc:'Architecture decisions, model selection, integration design, governance.' },
+    { num:'03', name:'Skill Sprint', sub:'Build Phase', desc:'Deploy the highest-value automations. Tested with live data.' },
+    { num:'04', name:'Integrate', sub:'ERP & CRM Conn.', desc:'Connect to your practice management, document, and billing systems.' },
+    { num:'05', name:'Enablement', sub:'Training & Adoption', desc:'Role-specific playbooks, workshops, and internal champion network.' },
+    { num:'06', name:'Managed Svc', sub:'Scale & Monitor', desc:'Continuous optimisation. Model updates. Quarterly capability expansion.' },
+  ];
+  return (
+    <section id="architecture" style={{padding:'120px 48px', background:C.white, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{maxWidth:640, marginBottom:56}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Deployment Architecture</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>A structured journey from chaos to clarity.</h2>
+          </div>
+        </Reveal>
+        <div className="arch-grid" style={{display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:1, background:C.border, borderRadius:12, overflow:'hidden', border:`1px solid ${C.border}`}}>
+          {phases.map((p,i) => (
+            <Reveal key={p.num} delay={Math.min(i+1,8)}>
+              <div style={{padding:'28px 20px', background:C.white, display:'flex', flexDirection:'column', gap:10, minHeight:200}}>
+                <span style={{fontSize:28, fontWeight:700, color:C.deepBlue, opacity:0.15, fontFamily:mono, lineHeight:1}}>{p.num}</span>
+                <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, letterSpacing:'-0.01em'}}>{p.name}</div>
+                <div style={{fontSize:10, fontWeight:600, color:C.blue, fontFamily:mono, letterSpacing:'0.06em', textTransform:'uppercase'}}>{p.sub}</div>
+                <p style={{fontSize:13, color:C.textBody, lineHeight:1.55}}>{p.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Intelligent Router â Full-section hub visual âââ */
+function RouterSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  const agents = [
+    { role:'REASONING', model:'Claude', desc:'Complex legal and consulting logic. Multi-step analysis. Nuanced judgment calls.', color:C.deepBlue, icon:'ð§ ', pos:'top' },
+    { role:'RESEARCH', model:'Gemini', desc:'Deep-web operational audits. Information synthesis across large document sets.', color:C.teal, icon:'ð', pos:'right' },
+    { role:'SPEED', model:'Llama / Groq', desc:'High-volume data ingestion. Sub-second processing for routine extraction.', color:C.purple, icon:'â¡', pos:'bottom' },
+    { role:'SYNTHESIS', model:'GPT-4o', desc:'Cross-platform integration. Report generation and formatting workflows.', color:C.orange, icon:'ð', pos:'left' },
+  ];
+
+  return (
+    <section id="router" style={{padding:'120px 48px', background:C.bg, borderTop:`1px solid ${C.border}`}} className="grid-bg">
+      <div ref={ref} style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{textAlign:'center', marginBottom:64}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Intelligent Router</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>Task-specific execution.</h2>
+            <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, maxWidth:560, margin:'0 auto'}}>
+              Every task routes to the optimal model. Your Skill Library isn't tied to a single vendor â it's orchestrated across the best available intelligence for each job.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Hub and spoke layout */}
+        <Reveal delay={2}>
+          <div style={{position:'relative', maxWidth:1000, margin:'0 auto'}}>
+            {/* Connection lines via SVG */}
+            <svg style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:0}} viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet">
+              {/* Lines from center to each corner */}
+              {[{x:150,y:100},{x:850,y:100},{x:150,y:380},{x:850,y:380}].map((end,i) => (
+                <React.Fragment key={i}>
+                  <line x1="500" y1="240" x2={end.x} y2={end.y} stroke={agents[i].color} strokeWidth="1.5" opacity={inView ? 0.15 : 0} style={{transition:`opacity 0.5s ease ${0.3+i*0.15}s`}} strokeDasharray="6,4"/>
+                  {inView && (
+                    <circle r="4" fill={agents[i].color} opacity="0.6">
+                      <animateMotion dur={`${2+i*0.3}s`} repeatCount="indefinite" begin={`${i*0.5}s`}
+                        path={`M500,240 L${end.x},${end.y}`}/>
+                      <animate attributeName="opacity" values="0;0.6;0.6;0" dur={`${2+i*0.3}s`} repeatCount="indefinite" begin={`${i*0.5}s`}/>
+                    </circle>
+                  )}
+                </React.Fragment>
+              ))}
+            </svg>
+
+            {/* Central Orchestrator */}
+            <div style={{position:'relative', zIndex:2, display:'flex', justifyContent:'center', marginBottom:0}}>
+              <div style={{
+                position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+                width:200, height:200, borderRadius:'50%',
+                border:`2px dashed rgba(30,58,138,0.12)`,
+                animation: inView ? 'orbitPulse 3s ease-in-out infinite' : 'none',
+              }} />
+              <div style={{
+                background:C.white, border:`2px solid ${C.deepBlue}`, borderRadius:20,
+                padding:'32px 40px', textAlign:'center', zIndex:3,
+                boxShadow:`0 8px 40px ${C.blueGlow}`, maxWidth:280, margin:'80px auto',
+                position:'relative',
+              }}>
+                <div style={{
+                  position:'absolute', top:-16, left:'50%', transform:'translateX(-50%)',
+                  width:32, height:32, borderRadius:'50%', background:C.deepBlue,
+                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:16,
+                }}>â</div>
+                <div style={{fontFamily:heading, fontSize:18, fontWeight:800, color:C.deepBlue, marginBottom:6, marginTop:8}}>Central Orchestrator</div>
+                <div style={{fontSize:13, color:C.textMuted, lineHeight:1.5}}>Dynamically routes every incoming task to the specialist agent best suited for the job</div>
+              </div>
+            </div>
+
+            {/* Agent cards â 2x2 grid around center */}
+            <div className="agent-grid" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, position:'relative', zIndex:2, marginTop:-40}}>
+              {agents.map((a,i) => (
+                <div key={a.role} className="deploy-card" style={{
+                  background:C.white, borderRadius:14, border:`1px solid ${C.border}`, overflow:'hidden',
+                  opacity:inView ? 1 : 0, transform:inView ? 'translateY(0)' : 'translateY(16px)',
+                  transition:`all 0.5s ease ${0.4+i*0.15}s`,
+                }}>
+                  <div style={{height:4, background:`linear-gradient(90deg, ${a.color}, transparent)`}} />
+                  <div style={{padding:'24px 24px'}}>
+                    <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
+                      <div style={{width:40, height:40, borderRadius:10, background:`${a.color}10`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20}}>{a.icon}</div>
+                      <div>
+                        <span style={{fontSize:10, fontWeight:700, fontFamily:mono, letterSpacing:'0.1em', color:a.color}}>{a.role}</span>
+                        <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary}}>{a.model}</div>
+                      </div>
+                    </div>
+                    <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>{a.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Skill Library â Full section, lots of skills âââ */
+function SkillLibrarySection() {
+  const skills = [
+    { file:'client_intake.skill', name:'Client Intake', desc:'Automates new client onboarding, data collection, and system entry.', icon:'ð§' },
+    { file:'invoice_recon.skill', name:'Invoice Reconciliation', desc:'Matches invoices against purchase orders and flags discrepancies.', icon:'ð°' },
+    { file:'compliance_check.skill', name:'Compliance Screener', desc:'Cross-references data against regulatory frameworks and flags risk.', icon:'ð¡ï¸' },
+    { file:'weekly_report.skill', name:'Weekly Report Generator', desc:'Compiles multi-source data into formatted weekly summaries.', icon:'ð' },
+    { file:'knowledge_search.skill', name:'Knowledge Search', desc:'Semantic search across your entire document library in seconds.', icon:'ð' },
+    { file:'email_triage.skill', name:'Email Triage Agent', desc:'Classifies, prioritises and routes incoming emails to the right team.', icon:'ð¬' },
+    { file:'contract_review.skill', name:'Contract Reviewer', desc:'Extracts key clauses, flags unusual terms, and compares against templates.', icon:'ð' },
+    { file:'meeting_prep.skill', name:'Meeting Prep Agent', desc:'Pulls client history, recent comms, and generates briefing documents.', icon:'ð' },
+    { file:'data_entry.skill', name:'Data Entry Automator', desc:'Extracts structured data from PDFs, images, and forms into your systems.', icon:'â¨ï¸' },
+    { file:'conflict_check.skill', name:'Conflict Checker', desc:'Runs comprehensive conflict of interest checks across client databases.', icon:'âï¸' },
+    { file:'proposal_builder.skill', name:'Proposal Builder', desc:'Generates tailored proposals using client data and service templates.', icon:'ð' },
+    { file:'time_entry.skill', name:'Time Entry Agent', desc:'Auto-logs billable hours from calendar, email, and document activity.', icon:'â±ï¸' },
+  ];
+
+  return (
+    <section style={{padding:'120px 48px', background:C.white, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{textAlign:'center', marginBottom:56}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Skill Library</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>Your firm's growing library of AI capabilities.</h2>
+            <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, maxWidth:600, margin:'0 auto'}}>
+              Every automation we deploy becomes a reusable skill â a structured instruction set that compounds in value and builds proprietary operational IP for your firm.
+            </p>
+          </div>
+        </Reveal>
+        <div className="skill-grid" style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:12}}>
+          {skills.map((s, i) => (
+            <Reveal key={s.file} delay={Math.min(i+1, 8)}>
+              <div className="skill-tile" style={{padding:'22px 20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, display:'flex', flexDirection:'column', gap:8, height:'100%', cursor:'default'}}>
+                <div style={{display:'flex', alignItems:'center', gap:10, marginBottom:2}}>
+                  <span style={{fontSize:20}}>{s.icon}</span>
+                  <div style={{fontFamily:heading, fontSize:14, fontWeight:700, color:C.textPrimary}}>{s.name}</div>
+                </div>
+                <div style={{fontFamily:mono, fontSize:11, color:C.blue, fontWeight:600, padding:'3px 8px', borderRadius:4, background:C.blueTint, alignSelf:'flex-start'}}>{s.file}</div>
+                <p style={{fontSize:12, color:C.textMuted, lineHeight:1.5, flex:1}}>{s.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Value Dashboard âââ */
+function ValueSection() {
+  return (
+    <section id="value" style={{padding:'120px 48px', background:C.bg, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{marginBottom:48}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>Value Realisation</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3vw, 40px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15}}>ROI-positive from Quarter 1.</h2>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
+          <div style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:14, overflow:'hidden', boxShadow:'0 1px 3px rgba(0,0,0,0.03)'}}>
+            <div style={{padding:'14px 28px', background:C.subtle, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+              <div style={{display:'flex', alignItems:'center', gap:10}}>
+                <div style={{width:7, height:7, borderRadius:'50%', background:C.green}} />
+                <span style={{fontSize:13, fontWeight:600, color:C.textPrimary, fontFamily:heading}}>AI Deploy â Monthly Impact Report</span>
+              </div>
+              <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>FEB 2026 Â· MONTH 4</span>
+            </div>
+            <div className="kpi-row" style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', borderBottom:`1px solid ${C.border}`}}>
+              <KPICard label="Capacity Repatriated" value={420} suffix=" hrs/mo" delta="+38" deltaLabel="vs last month" />
+              <KPICard label="Annualised Savings" value={58} prefix="$" suffix="k / workflow" delta="+12k" deltaLabel="improvement" borderLeft />
+              <KPICard label="Operational ROI" value={5.2} suffix="x" delta="+0.8x" deltaLabel="vs month 3" borderLeft isDecimal />
+            </div>
+            <div style={{padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', background:C.subtle}}>
+              <div style={{display:'flex', gap:20}}>
+                {[
+                  {label:'System Health', status:'Nominal', color:C.green},
+                  {label:'Active Skills', status:'18 deployed', color:C.blue},
+                  {label:'Next Review', status:'Mar 12', color:C.textFaint},
+                ].map(item => (
+                  <div key={item.label} style={{display:'flex', alignItems:'center', gap:6}}>
+                    <div style={{width:5, height:5, borderRadius:'50%', background:item.color}} />
+                    <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>{item.label}:</span>
+                    <span style={{fontSize:11, color:C.textBody, fontFamily:mono}}>{item.status}</span>
+                  </div>
+                ))}
+              </div>
+              <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY MANAGED SERVICES</span>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function KPICard({ label, value, suffix, prefix='', delta, deltaLabel, borderLeft, isDecimal }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const [displayVal, setDisplayVal] = useState(0);
+  const started = useRef(false);
+  useEffect(() => {
+    if (inView && !started.current) {
+      started.current = true;
+      const dur = 1800, startTime = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now()-startTime)/dur, 1);
+        const e = 1 - Math.pow(1-p, 3);
+        setDisplayVal(isDecimal ? parseFloat((value*e).toFixed(1)) : Math.round(value*e));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [inView]);
+  return (
+    <div ref={ref} className={borderLeft ? 'kpi-card-border' : ''} style={{padding:'28px 24px', borderLeft:borderLeft ? `1px solid ${C.border}` : 'none'}}>
+      <div style={{fontSize:11, fontWeight:600, color:C.textFaint, letterSpacing:'0.06em', textTransform:'uppercase', fontFamily:mono, marginBottom:10}}>{label}</div>
+      <div className="counter-value" style={{fontSize:36, fontWeight:700, color:C.textPrimary, fontFamily:mono, letterSpacing:'-0.04em', lineHeight:1, marginBottom:8}}>
+        {prefix && <span style={{color:C.deepBlue}}>{prefix}</span>}{displayVal}<span style={{fontSize:18, color:C.textFaint, fontWeight:500}}>{suffix}</span>
+      </div>
+      <div style={{display:'flex', alignItems:'center', gap:5}}>
+        <span style={{fontSize:11, fontWeight:600, color:C.green, fontFamily:mono}}>â² {delta}</span>
+        <span style={{fontSize:11, color:C.textFaint}}>{deltaLabel}</span>
+      </div>
+    </div>
+  );
+}
+
+/* âââ Autonomy Section â Slider + full-width support/deploy âââ */
+function AutonomySection() {
+  const [sliderVal, setSliderVal] = useState(20);
+  const phases = [
+    { pct:0, label:'Human-in-the-Loop', desc:'Full human review on every task. AI assists, human decides.', icon:'ð¤' },
+    { pct:33, label:'Supervised Autonomy', desc:'AI executes routine tasks. Humans review flagged exceptions.', icon:'ðï¸' },
+    { pct:66, label:'Exception-Only Review', desc:'AI handles 90%+ autonomously. Humans intervene on edge cases.', icon:'ð¯' },
+    { pct:100, label:'Human-on-the-Loop', desc:'Full autonomous operation. Humans monitor dashboards and strategic decisions.', icon:'ð' },
+  ];
+
+  const activePhase = sliderVal < 25 ? 0 : sliderVal < 50 ? 1 : sliderVal < 75 ? 2 : 3;
+
+  return (
+    <section style={{padding:'120px 48px', background:C.white, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{textAlign:'center', marginBottom:56}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>System Autonomy</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(28px, 3.5vw, 42px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.15, marginBottom:16}}>Your journey to autonomous operations.</h2>
+            <p style={{fontSize:15, color:C.textBody, lineHeight:1.7, maxWidth:600, margin:'0 auto'}}>
+              We start with full human oversight on every task. As confidence builds, your team shifts to exception-only review. Drag the slider to explore each stage.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Interactive Slider */}
+        <Reveal delay={1}>
+          <div style={{maxWidth:900, margin:'0 auto 64px', background:C.white, border:`1px solid ${C.border}`, borderRadius:16, padding:'40px 40px 32px', boxShadow:'0 2px 12px rgba(0,0,0,0.04)'}}>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24}}>
+              <div style={{display:'flex', alignItems:'center', gap:12}}>
+                <span style={{fontSize:32}}>{phases[activePhase].icon}</span>
+                <div>
+                  <div style={{fontFamily:heading, fontSize:22, fontWeight:800, color:C.deepBlue}}>{phases[activePhase].label}</div>
+                  <div style={{fontSize:14, color:C.textBody}}>{phases[activePhase].desc}</div>
+                </div>
+              </div>
+              <div style={{textAlign:'right'}}>
+                <div style={{fontSize:10, fontFamily:mono, color:C.textFaint, letterSpacing:'0.06em'}}>AUTONOMY LEVEL</div>
+                <div style={{fontSize:28, fontWeight:800, fontFamily:mono, color:C.deepBlue}}>{sliderVal}%</div>
+              </div>
+            </div>
+            {/* Slider track */}
+            <div style={{position:'relative', padding:'20px 0'}}>
+              <input type="range" min="0" max="100" value={sliderVal} onChange={e => setSliderVal(parseInt(e.target.value))}
+                style={{
+                  width:'100%', height:8, appearance:'none', background:`linear-gradient(90deg, ${C.deepBlue} ${sliderVal}%, ${C.subtle} ${sliderVal}%)`,
+                  borderRadius:4, outline:'none', cursor:'pointer',
+                }} />
+              {/* Phase markers */}
+              <div style={{display:'flex', justifyContent:'space-between', marginTop:12}}>
+                {phases.map((p,i) => (
+                  <div key={i} style={{textAlign:'center', flex:1}}>
+                    <div style={{width:8, height:8, borderRadius:'50%', background: activePhase >= i ? C.deepBlue : C.slate300, margin:'0 auto 6px', transition:'all 0.2s'}} />
+                    <div style={{fontSize:10, fontFamily:mono, color: activePhase === i ? C.deepBlue : C.textFaint, fontWeight: activePhase === i ? 700 : 400, transition:'all 0.2s'}}>{p.label.split(' ').slice(-1)[0]}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Support Layer + Deployment Options â full-width grid */}
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:20}} className="two-col">
+          <Reveal delay={2}>
+            <div style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:16, padding:'36px 32px', height:'100%'}}>
+              <div style={{fontSize:12, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:24}}>SUPPORT LAYER</div>
+              <div style={{display:'flex', flexDirection:'column', gap:16}}>
+                <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð</div>
+                  <div>
+                    <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Client Wiki</div>
+                    <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Searchable knowledge base maintained by AI. Every process, decision, and precedent documented and instantly accessible.</p>
+                  </div>
+                </div>
+                <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð¤</div>
+                  <div>
+                    <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Support Chatbot</div>
+                    <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Handles Tier 1 internal queries automatically. Staff get instant answers without waiting for IT or senior team members.</p>
+                  </div>
+                </div>
+                <div style={{display:'flex', gap:16, alignItems:'flex-start', padding:'20px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`}}>
+                  <div style={{width:44, height:44, borderRadius:10, background:C.amberTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0}}>ð</div>
+                  <div>
+                    <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Escalation Paths</div>
+                    <p style={{fontSize:14, color:C.textBody, lineHeight:1.6}}>Complex issues automatically route to human specialists. Clear SLAs and priority scoring ensure nothing falls through the cracks.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={3}>
+            <div style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:16, padding:'36px 32px', height:'100%'}}>
+              <div style={{fontSize:12, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:24}}>DEPLOYMENT OPTIONS</div>
+              <div style={{display:'flex', flexDirection:'column', gap:16}}>
+                <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
+                  <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.blueTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>âï¸</div>
+                    <div>
+                      <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>Cloud Hosted</div>
+                      <div style={{fontSize:11, fontFamily:mono, color:C.green, fontWeight:600}}>FASTEST TO DEPLOY</div>
+                    </div>
+                  </div>
+                  <p style={{fontSize:14, color:C.textBody, lineHeight:1.6, marginBottom:12}}>Managed infrastructure on secure Australian cloud. Integrates directly with Microsoft 365, Google Workspace, and your existing SaaS stack.</p>
+                  <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
+                    {['2-week setup','Auto-scaling','99.9% uptime','SOC 2 compliant'].map(t => (
+                      <span key={t} style={{fontSize:10, padding:'4px 10px', borderRadius:4, background:C.blueTint, color:C.deepBlue, fontFamily:mono, fontWeight:600}}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
+                  <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.purpleTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>ð</div>
+                    <div>
+                      <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>On-Premise (Sovereign)</div>
+                      <div style={{fontSize:11, fontFamily:mono, color:C.purple, fontWeight:600}}>MAXIMUM SECURITY</div>
+                    </div>
+                  </div>
+                  <p style={{fontSize:14, color:C.textBody, lineHeight:1.6, marginBottom:12}}>Data never leaves your network. Local LLM infrastructure for regulated industries handling sensitive client information. Full data sovereignty.</p>
+                  <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
+                    {['Air-gapped option','IRAP aligned','Data sovereignty','Custom hardware'].map(t => (
+                      <span key={t} style={{fontSize:10, padding:'4px 10px', borderRadius:4, background:C.purpleTint, color:C.purple, fontFamily:mono, fontWeight:600}}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="deploy-card" style={{padding:'24px', background:C.bg, borderRadius:12, border:`1px solid ${C.border}`, flex:1}}>
+                  <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:12}}>
+                    <div style={{width:44, height:44, borderRadius:10, background:C.tealTint, display:'flex', alignItems:'center', justifyContent:'center', fontSize:22}}>ð</div>
+                    <div>
+                      <div style={{fontFamily:heading, fontSize:18, fontWeight:700, color:C.textPrimary}}>Hybrid</div>
+                      <div style={{fontSize:11, fontFamily:mono, color:C.teal, fontWeight:600}}>BEST OF BOTH</div>
+                    </div>
+                  </div>
+                  <p style={{fontSize:14, color:C.textBody, lineHeight:1.6, marginBottom:12}}>Sensitive data stays on-premise while general tasks use cloud. Bridge your existing infrastructure with modern AI capabilities.</p>
+                  <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
+                    {['Flexible routing','Gradual migration','Cost-optimised','Compliance ready'].map(t => (
+                      <span key={t} style={{fontSize:10, padding:'4px 10px', borderRadius:4, background:C.tealTint, color:C.teal, fontFamily:mono, fontWeight:600}}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Process Section âââ */
+function ProcessSection() {
+  const steps = [
+    { num:'01', title:'Audit', duration:'1 week', desc:'Map every workflow. Score automation potential. Deliver a ranked roadmap with projected returns per process â before any implementation spend.' },
+    { num:'02', title:'Build', duration:'2â4 weeks', desc:'Deploy the highest-value automations from the roadmap. Integrated with your systems, tested on live data, team trained and supported.' },
+    { num:'03', title:'Operate', duration:'Ongoing', desc:'Continuous optimisation. Model updates, API changes, quarterly skill expansions, and monthly reporting. You focus on the practice.' },
+  ];
+  return (
+    <section id="process" style={{padding:'120px 48px', background:C.bg, borderTop:`1px solid ${C.border}`}} className="grid-bg">
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{marginBottom:56}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>How We Work</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(32px, 3.5vw, 46px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.1}}>Audit. Build. Operate.</h2>
+          </div>
+        </Reveal>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:1, background:C.border, borderRadius:12, overflow:'hidden', border:`1px solid ${C.border}`}} className="arch-grid">
+          {steps.map((step,i) => (
+            <Reveal key={step.num} delay={i+1}>
+              <div style={{padding:'40px 32px', background:C.white, display:'flex', flexDirection:'column', gap:14, minHeight:220}}>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                  <span style={{fontSize:32, fontWeight:700, color:C.deepBlue, opacity:0.15, fontFamily:mono, lineHeight:1}}>{step.num}</span>
+                  <span style={{fontSize:11, fontWeight:600, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em',
+                    padding:'4px 10px', borderRadius:4, background:'rgba(15,23,42,0.03)', border:`1px solid ${C.border}`}}>{step.duration}</span>
+                </div>
+                <div style={{fontFamily:heading, fontSize:22, fontWeight:700, color:C.textPrimary, letterSpacing:'-0.02em'}}>{step.title}</div>
+                <p style={{fontSize:14, color:C.textBody, lineHeight:1.65}}>{step.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Survey + Dashboard Report âââ */
+const SURVEY_STEPS = [
+  { id:'size', question:'How many staff are in your organisation?', type:'single',
+    options:[
+      {label:'1â14', tag:'Micro'},
+      {label:'15â50', tag:'ICP'},
+      {label:'51â150', tag:'ICP'},
+      {label:'150+', tag:'Enterprise'},
+    ]},
+  { id:'industry', question:'What is your primary industry?', type:'single',
+    options:[
+      {label:'Professional Services (Law, Accounting, Consulting)'},
+      {label:'Financial Services'},
+      {label:'Property & Real Estate'},
+      {label:'Healthcare Administration'},
+      {label:'Other'},
+    ]},
+  { id:'techProfile', question:'What does your current "digital plumbing" look like?', type:'single',
+    options:[
+      {label:'Cloud-native', desc:'Microsoft 365 / Google Workspace, Cloud CRM, Slack or Teams'},
+      {label:'Hybrid', desc:'Some cloud tools, some legacy on-premise servers'},
+      {label:'Legacy', desc:'Mostly paper, manual spreadsheets, and disconnected desktop software'},
+    ]},
+  { id:'workflows', question:'Where does your team lose the most hours each week?', type:'multi', max:2,
+    options:[
+      {label:'Client onboarding and intake data entry'},
+      {label:'Compliance checking and risk assessments'},
+      {label:'Drafting repetitive reports or proposals'},
+      {label:'Invoice reconciliation and financial admin'},
+      {label:'Searching for internal information and past documents'},
+    ]},
+  { id:'maturity', question:'How would you describe your current AI adoption?', type:'single',
+    options:[
+      {label:'Not using it yet'},
+      {label:'Individuals use ChatGPT casually', tag:'Assisted Work'},
+      {label:'We ran a pilot, but it stalled before reaching production'},
+      {label:'We have deployed automated agentic workflows'},
+    ]},
+  { id:'email', question:'Enter your email to instantly view your Custom Automation Dashboard and Recommended Skill Blueprint.', type:'email' },
+];
+
+const SKILL_RECS = {
+  'Client onboarding and intake data entry': {
+    file:'client_intake.skill', name:'Client Intake Agent', hours:45,
+    desc:'Automatically extracts ABNs, pre-fills CRM data, and drafts engagement letters from incoming emails in 5 minutes.',
+  },
+  'Compliance checking and risk assessments': {
+    file:'compliance_check.skill', name:'Compliance Screener', hours:38,
+    desc:'Agentic workflow that cross-references new data against your regulatory frameworks without human prompting.',
+  },
+  'Drafting repetitive reports or proposals': {
+    file:'weekly_report.skill', name:'Report & Proposal Generator', hours:42,
+    desc:'Compiles data across your systems to generate recurring presentations, briefs, and client-ready proposals.',
+  },
+  'Invoice reconciliation and financial admin': {
+    file:'invoice_recon.skill', name:'Invoice Reconciliation Agent', hours:50,
+    desc:'Matches invoices against purchase orders, reconciles across systems, and flags discrepancies for review.',
+  },
+  'Searching for internal information and past documents': {
+    file:'knowledge_search.skill', name:'Knowledge Search Agent', hours:30,
+    desc:'Semantic search across your entire document library â finds precedents, past advice, and internal policies in seconds.',
+  },
+};
+
+function SurveySection() {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const current = SURVEY_STEPS[step];
+  const totalSteps = SURVEY_STEPS.length;
+
+  const setAnswer = (val) => {
+    if (current.type === 'multi') {
+      const prev = answers[current.id] || [];
+      if (prev.includes(val)) {
+        setAnswers({...answers, [current.id]: prev.filter(v => v !== val)});
+      } else if (prev.length < (current.max || 99)) {
+        setAnswers({...answers, [current.id]: [...prev, val]});
+      }
+    } else {
+      setAnswers({...answers, [current.id]: val});
+    }
+  };
+
+  const canProceed = () => {
+    if (current.type === 'email') return email.includes('@') && email.includes('.');
+    if (current.type === 'multi') return (answers[current.id] || []).length > 0;
+    return !!answers[current.id];
+  };
+
+  const handleNext = () => {
+    if (current.type === 'email') {
+      setAnswers({...answers, email});
+      setSubmitted(true);
+      setTimeout(() => { const el = document.getElementById('assess'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 100);
+    } else if (step < totalSteps - 1) {
+      setStep(step + 1);
+    }
+  };
+
+  const handleKeyDown = (e) => { if (e.key === 'Enter' && canProceed()) handleNext(); };
+
+  if (submitted) return <ReportDashboard answers={{...answers, email}} />;
+
+  return (
+    <section id="assess" style={{padding:'120px 48px', background:C.white, borderTop:`1px solid ${C.border}`}}>
+      <div style={{maxWidth:640, margin:'0 auto'}}>
+        <Reveal>
+          <div style={{textAlign:'center', marginBottom:48}}>
+            <div style={{fontSize:12, fontWeight:600, color:C.deepBlue, letterSpacing:'0.1em', textTransform:'uppercase', fontFamily:mono, marginBottom:14}}>2-Minute Automation Audit</div>
+            <h2 style={{fontFamily:heading, fontSize:'clamp(24px, 3vw, 36px)', fontWeight:700, letterSpacing:'-0.03em', color:C.textPrimary, lineHeight:1.2, marginBottom:12}}>
+              Stop guessing.<br/>See your firm's AI ROI in 2 minutes.
+            </h2>
+            <p style={{fontSize:15, color:C.textMuted, lineHeight:1.7}}>
+              Five quick questions. We'll generate a personalised Automation Dashboard showing the top AI Skills your firm needs and the capacity you'll repatriate.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Progress */}
+        <div style={{marginBottom:36}}>
+          <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
+            <span style={{fontSize:11, fontFamily:mono, color:C.textFaint}}>QUESTION {step + 1} OF {totalSteps}</span>
+            <span style={{fontSize:11, fontFamily:mono, color:C.textFaint}}>{Math.round(((step+1)/totalSteps)*100)}%</span>
+          </div>
+          <div style={{height:3, background:C.subtle, borderRadius:2, overflow:'hidden'}}>
+            <div style={{height:'100%', width:`${((step+1)/totalSteps)*100}%`, background:C.deepBlue, borderRadius:2, transition:'width 0.3s ease'}} />
+          </div>
+        </div>
+
+        {/* Question */}
+        <div style={{marginBottom:32}}>
+          <h3 style={{fontFamily:heading, fontSize:20, fontWeight:700, color:C.textPrimary, marginBottom:24}}>{current.question}</h3>
+
+          {current.type === 'email' ? (
+            <div>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={handleKeyDown}
+                placeholder="partner@yourfirm.com.au" autoFocus
+                style={{
+                  width:'100%', padding:'16px 20px', borderRadius:10, border:`2px solid ${C.borderStrong}`,
+                  fontSize:16, fontFamily:'Inter, sans-serif', color:C.textPrimary, outline:'none',
+                  background:C.white, transition:'border-color 0.2s',
+                }}
+                onFocus={e => e.target.style.borderColor = C.deepBlue}
+                onBlur={e => e.target.style.borderColor = C.borderStrong}
+              />
+              <p style={{fontSize:12, color:C.textFaint, marginTop:12, lineHeight:1.6}}>
+                Your dashboard appears instantly on screen. We'll also email a copy. No spam â just your results and a brief follow-up.
+              </p>
+            </div>
+          ) : (
+            <div style={{display:'flex', flexDirection:'column', gap:8}}>
+              {current.options.map(opt => {
+                const val = opt.label;
+                const isSelected = current.type === 'multi'
+                  ? (answers[current.id] || []).includes(val)
+                  : answers[current.id] === val;
+                const atMax = current.type === 'multi' && (answers[current.id] || []).length >= (current.max || 99) && !isSelected;
+                return (
+                  <div key={val}
+                    className={`survey-option ${current.type === 'multi' ? 'survey-option-multi' : ''} ${isSelected ? 'selected' : ''}`}
+                    onClick={() => !atMax && setAnswer(val)}
+                    style={atMax ? {opacity:0.4, cursor:'default'} : {}}>
+                    <div style={{display:'flex', alignItems:'center', gap:12}}>
+                      <div style={{
+                        width:20, height:20, borderRadius: current.type === 'multi' ? 4 : 10,
+                        border:`2px solid ${isSelected ? C.deepBlue : C.slate300}`,
+                        background:isSelected ? C.deepBlue : 'transparent',
+                        display:'flex', alignItems:'center', justifyContent:'center',
+                        transition:'all 0.15s', flexShrink:0,
+                      }}>
+                        {isSelected && <span style={{color:'#fff', fontSize:12, lineHeight:1}}>â</span>}
+                      </div>
+                      <div>
+                        <div style={{display:'flex', alignItems:'center', gap:8}}>
+                          <span style={{fontSize:15, color:C.textPrimary, fontWeight:isSelected ? 600 : 400}}>{val}</span>
+                          {opt.tag && <span style={{fontSize:10, fontWeight:600, fontFamily:mono, color:C.blue, padding:'2px 7px', borderRadius:3, background:C.blueTint, letterSpacing:'0.04em'}}>{opt.tag}</span>}
+                        </div>
+                        {opt.desc && <div style={{fontSize:12, color:C.textMuted, marginTop:2}}>{opt.desc}</div>}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {current.type === 'multi' && <p style={{fontSize:12, color:C.textFaint, marginTop:10}}>Select up to {current.max || 'any number'}</p>}
+        </div>
+
+        {/* Nav */}
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <button onClick={() => step > 0 && setStep(step-1)}
+            style={{
+              padding:'10px 20px', borderRadius:8, border:`1px solid ${C.border}`, background:'transparent',
+              fontSize:14, color: step > 0 ? C.textBody : C.textFaint, cursor: step > 0 ? 'pointer' : 'default',
+              fontFamily:'Inter, sans-serif', transition:'all 0.15s',
+            }}>â Back</button>
+          <button onClick={handleNext} disabled={!canProceed()}
+            style={{
+              padding:'12px 28px', borderRadius:8, border:'none',
+              background:canProceed() ? C.deepBlue : C.slate300,
+              fontSize:14, fontWeight:600, color:'#fff', cursor:canProceed() ? 'pointer' : 'default',
+              fontFamily:'Inter, sans-serif', transition:'all 0.15s',
+              boxShadow:canProceed() ? `0 2px 12px ${C.blueGlow}` : 'none',
+            }}>{step === totalSteps - 1 ? 'View My Dashboard â' : 'Next â'}</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Report Dashboard (4 Blocks) âââ */
+function ReportDashboard({ answers }) {
+  const selectedWorkflows = answers.workflows || [];
+  const sizeMap = {'1â14':10,'15â50':35,'51â150':90,'150+':200};
+  const teamSize = sizeMap[answers.size] || 35;
+  const maturityMult = {
+    'Not using it yet':1.0,
+    'Individuals use ChatGPT casually':0.85,
+    'We ran a pilot, but it stalled before reaching production':0.9,
+    'We have deployed automated agentic workflows':0.45,
+  };
+  const mult = maturityMult[answers.maturity] || 0.85;
+  const isCloud = answers.techProfile === 'Cloud-native';
+  const isLegacy = answers.techProfile === 'Legacy';
+
+  const skills = selectedWorkflows.map(w => SKILL_RECS[w]).filter(Boolean);
+  const baseHours = skills.reduce((a,s) => a + s.hours, 0);
+  const totalHours = Math.round(baseHours * (teamSize / 35) * mult);
+  const annualisedSaving = Math.round(totalHours * 12 * 95 / 1000);
+  const roi = totalHours > 80 ? '5.2' : totalHours > 40 ? '3.8' : '2.4';
+
+  /* Animated KPI counter */
+  function AnimKPI({ target, prefix, suffix }) {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true });
+    const [val, setVal] = useState(0);
+    const started = useRef(false);
+    useEffect(() => {
+      if (inView && !started.current) {
+        started.current = true;
+        const isDecimal = String(target).includes('.');
+        const num = parseFloat(target);
+        const dur = 1600, t0 = Date.now();
+        const tick = () => {
+          const p = Math.min((Date.now()-t0)/dur, 1);
+          const e = 1 - Math.pow(1-p, 3);
+          setVal(isDecimal ? parseFloat((num*e).toFixed(1)) : Math.round(num*e));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, [inView]);
+    return <span ref={ref} className="counter-value">{prefix}{val}{suffix}</span>;
+  }
+
+  /* Deployment recommendation */
+  const deployRec = isLegacy
+    ? {title:'On-Premise (Sovereign) Deployment', desc:'We recommend local LLM infrastructure to ensure strict data privacy. Your data never leaves your network â ideal for regulated industries handling sensitive client information.', icon:'ð'}
+    : isCloud
+    ? {title:'Cloud-Native Deployment', desc:`Based on your ${answers.techProfile === 'Cloud-native' ? 'Microsoft 365 / Google Workspace' : 'hybrid'} stack, we recommend a cloud-native deployment integrating directly into your existing environment. Fastest path to production.`, icon:'âï¸'}
+    : {title:'Hybrid Deployment', desc:'A hybrid architecture connecting your cloud tools with on-premise systems. We bridge the gap so your AI skills work across both environments seamlessly.', icon:'ð'};
+
+  return (
+    <section id="assess" style={{padding:'80px 48px 120px', background:C.bg}} className="grid-bg">
+      <div style={{maxWidth:960, margin:'0 auto'}}>
+        {/* Dashboard Header */}
+        <div style={{background:C.white, border:`1px solid ${C.border}`, borderRadius:14, overflow:'hidden', boxShadow:'0 2px 8px rgba(0,0,0,0.04)', marginBottom:0}}>
+          <div style={{padding:'16px 28px', background:C.subtle, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+            <div style={{display:'flex', alignItems:'center', gap:10}}>
+              <div style={{width:8, height:8, borderRadius:'50%', background:C.green}} />
+              <span style={{fontSize:14, fontWeight:700, color:C.textPrimary, fontFamily:heading}}>Your Firm's AI Deployment Blueprint</span>
+            </div>
+            <span style={{fontSize:11, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>{answers.industry} Â· {answers.size} STAFF</span>
+          </div>
+
+          {/* ââ BLOCK 1: ROI Projection ââ */}
+          <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>01 Â· ROI PROJECTION</div>
+            <div className="kpi-row" style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:0}}>
+              <div style={{padding:'0 20px 0 0'}}>
+                <div style={{fontSize:10, fontWeight:600, color:C.textFaint, fontFamily:mono, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:8}}>Capacity Repatriated</div>
+                <div style={{fontSize:38, fontWeight:700, color:C.textPrimary, fontFamily:mono, letterSpacing:'-0.04em', lineHeight:1}}>
+                  <AnimKPI target={totalHours} prefix="" suffix="" />
+                  <span style={{fontSize:16, color:C.textFaint, fontWeight:500}}>+ hrs/mo</span>
+                </div>
+              </div>
+              <div className="kpi-card-border" style={{padding:'0 20px', borderLeft:`1px solid ${C.border}`}}>
+                <div style={{fontSize:10, fontWeight:600, color:C.textFaint, fontFamily:mono, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:8}}>Annualised Savings</div>
+                <div style={{fontSize:38, fontWeight:700, color:C.textPrimary, fontFamily:mono, letterSpacing:'-0.04em', lineHeight:1}}>
+                  <span style={{color:C.deepBlue}}>$</span><AnimKPI target={annualisedSaving} prefix="" suffix="" />
+                  <span style={{fontSize:16, color:C.textFaint, fontWeight:500}}>k /workflow</span>
+                </div>
+              </div>
+              <div className="kpi-card-border" style={{padding:'0 0 0 20px', borderLeft:`1px solid ${C.border}`}}>
+                <div style={{fontSize:10, fontWeight:600, color:C.textFaint, fontFamily:mono, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:8}}>Target ROI</div>
+                <div style={{fontSize:38, fontWeight:700, color:C.textPrimary, fontFamily:mono, letterSpacing:'-0.04em', lineHeight:1}}>
+                  <AnimKPI target={roi} prefix="" suffix="" />
+                  <span style={{fontSize:16, color:C.textFaint, fontWeight:500}}>x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ââ BLOCK 2: Skill Sprint Recommendations ââ */}
+          <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>02 Â· YOUR CUSTOM SKILL SPRINT</div>
+            <div style={{display:'flex', flexDirection:'column', gap:12}}>
+              {skills.map((s,i) => (
+                <div key={s.file} style={{display:'flex', gap:16, alignItems:'flex-start', padding:'18px 20px', background:C.bg, borderRadius:10, border:`1px solid ${C.border}`}}>
+                  <div style={{width:40, height:40, borderRadius:8, background:'rgba(30,58,138,0.06)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+                    <span style={{fontFamily:mono, fontSize:13, fontWeight:700, color:C.deepBlue}}>ð</span>
+                  </div>
+                  <div style={{flex:1}}>
+                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:4, flexWrap:'wrap', gap:6}}>
+                      <span style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary}}>{s.name}</span>
+                      <span style={{fontSize:11, fontWeight:600, fontFamily:mono, color:C.deepBlue, padding:'3px 10px', borderRadius:4, background:'rgba(30,58,138,0.06)'}}>{s.file}</span>
+                    </div>
+                    <p style={{fontSize:14, color:C.textBody, lineHeight:1.6, marginBottom:8}}>{s.desc}</p>
+                    <div style={{display:'flex', alignItems:'center', gap:8}}>
+                      <div style={{height:5, flex:1, borderRadius:3, background:'#E2E8F0', overflow:'hidden'}}>
+                        <div style={{width:`${Math.min(Math.round(s.hours * (teamSize/35) * mult / 2), 100)}%`, height:'100%', borderRadius:3, background:`linear-gradient(90deg, ${C.deepBlue}, ${C.blue})`, transition:'width 1s ease'}} />
+                      </div>
+                      <span style={{fontSize:12, fontWeight:700, color:C.deepBlue, fontFamily:mono, whiteSpace:'nowrap'}}>~{Math.round(s.hours * (teamSize/35) * mult)} hrs/mo</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {skills.length === 0 && (
+                <div style={{padding:'24px', textAlign:'center', background:C.bg, borderRadius:10, border:`1px solid ${C.border}`}}>
+                  <p style={{fontSize:14, color:C.textMuted}}>Complete the assessment to see your recommended skills.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ââ BLOCK 3: Deployment Architecture ââ */}
+          <div style={{padding:'32px 28px', borderBottom:`1px solid ${C.border}`}}>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.deepBlue, letterSpacing:'0.1em', marginBottom:20}}>03 Â· DEPLOYMENT ARCHITECTURE</div>
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16}} className="two-col">
+              <div style={{padding:'20px', background:C.bg, borderRadius:10, border:`1px solid ${C.border}`}}>
+                <div style={{fontSize:20, marginBottom:8}}>{deployRec.icon}</div>
+                <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:8}}>{deployRec.title}</div>
+                <p style={{fontSize:13, color:C.textBody, lineHeight:1.6}}>{deployRec.desc}</p>
+              </div>
+              <div style={{display:'flex', flexDirection:'column', gap:10}}>
+                <div style={{padding:'16px 18px', background:C.bg, borderRadius:8, border:`1px solid ${C.border}`, flex:1}}>
+                  <div style={{fontSize:10, fontWeight:600, fontFamily:mono, color:C.textFaint, letterSpacing:'0.06em', marginBottom:6}}>TIMELINE TO PRODUCTION</div>
+                  <div style={{fontFamily:mono, fontSize:22, fontWeight:700, color:C.deepBlue}}>8 Weeks</div>
+                  <div style={{fontSize:12, color:C.textMuted}}>From Audit to live Skill Sprint</div>
+                </div>
+                <div style={{padding:'16px 18px', background:C.bg, borderRadius:8, border:`1px solid ${C.border}`, flex:1}}>
+                  <div style={{fontSize:10, fontWeight:600, fontFamily:mono, color:C.textFaint, letterSpacing:'0.06em', marginBottom:6}}>ADOPTION SUPPORT</div>
+                  <div style={{fontFamily:heading, fontSize:14, fontWeight:700, color:C.textPrimary, marginBottom:4}}>Included at no extra cost</div>
+                  <div style={{fontSize:12, color:C.textMuted}}>Custom internal Client Wiki and Support Chatbot to ensure your staff actually use it.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ââ BLOCK 4: Grant Funding Alert ââ */}
+          <div style={{padding:'28px', borderBottom:`1px solid ${C.border}`, background:'rgba(34,197,94,0.03)'}}>
+            <div style={{fontSize:11, fontWeight:700, fontFamily:mono, color:C.green, letterSpacing:'0.1em', marginBottom:14}}>04 Â· GRANT FUNDING ALERT</div>
+            <div style={{display:'flex', gap:16, alignItems:'flex-start'}}>
+              <div style={{width:44, height:44, borderRadius:10, background:C.greenTint, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, fontSize:20}}>ð¦ðº</div>
+              <div>
+                <div style={{fontFamily:heading, fontSize:16, fontWeight:700, color:C.textPrimary, marginBottom:6}}>Did you know? The Australian Government's AI Adopt Program provides grants that can cover up to 50% of eligible AI implementation costs.</div>
+                <p style={{fontSize:14, color:C.textBody, lineHeight:1.65}}>
+                  We design our engagements to help you leverage this funding, making your transition effectively half-price. We'll include grant eligibility guidance in your Audit deliverables.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Status bar */}
+          <div style={{padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', background:C.subtle}}>
+            <div style={{display:'flex', gap:20}}>
+              <div style={{display:'flex', alignItems:'center', gap:6}}>
+                <div style={{width:5, height:5, borderRadius:'50%', background:C.green}} />
+                <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>Report generated</span>
+              </div>
+              <div style={{display:'flex', alignItems:'center', gap:6}}>
+                <div style={{width:5, height:5, borderRadius:'50%', background:C.blue}} />
+                <span style={{fontSize:11, color:C.textFaint, fontFamily:mono}}>Sent to {answers.email}</span>
+              </div>
+            </div>
+            <span style={{fontSize:10, color:C.textFaint, fontFamily:mono, letterSpacing:'0.04em'}}>AI DEPLOY Â· AUTOMATION AUDIT</span>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <div style={{textAlign:'center', padding:'48px 0 0'}}>
+          <h3 style={{fontFamily:heading, fontSize:'clamp(20px, 2.5vw, 28px)', fontWeight:700, color:C.textPrimary, letterSpacing:'-0.02em', marginBottom:12}}>
+            Book your comprehensive 1-Week Audit.
+          </h3>
+          <p style={{fontSize:15, color:C.textBody, maxWidth:560, margin:'0 auto 28px', lineHeight:1.7}}>
+            Let's move from AI-curious to fully AI-enabled. In our 1-week Audit, we'll map your specific workflows, conduct a time-and-motion study, and deliver a ranked roadmap of automations â before any implementation spend.
+          </p>
+          <a href={`mailto:simon@unlockcapital.ai?subject=AI%20Deploy%20â%20Audit%20Request%20(${encodeURIComponent(answers.industry || 'General')})&body=${encodeURIComponent(`Hi Simon,\n\nI completed the AI Readiness Assessment.\n\nFirm: ${answers.industry || 'N/A'}\nSize: ${answers.size || 'N/A'}\nTech: ${answers.techProfile || 'N/A'}\nPriority workflows: ${(answers.workflows || []).join(', ')}\nCurrent AI adoption: ${answers.maturity || 'N/A'}\n\nI'm interested in booking the 1-Week Operational Audit.\n\nBest regards`)}`}
+            style={{
+              display:'inline-flex', alignItems:'center', gap:8,
+              padding:'16px 36px', borderRadius:8, background:C.deepBlue, color:C.white,
+              fontWeight:700, fontSize:16, textDecoration:'none',
+              boxShadow:`0 4px 20px ${C.blueGlow}`, transition:'all 0.2s',
+            }}
+            onMouseEnter={e => {e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 6px 28px ${C.blueGlow}`;}}
+            onMouseLeave={e => {e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow=`0 4px 20px ${C.blueGlow}`;}}
+          >Book a 1-Week Audit <span style={{fontSize:18}}>â</span></a>
+          <div style={{marginTop:16}}>
+            <button onClick={() => window.location.reload()} style={{
+              background:'none', border:'none', fontSize:13, color:C.textFaint, cursor:'pointer',
+              fontFamily:'Inter, sans-serif', textDecoration:'underline',
+            }}>Retake assessment</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* âââ Footer âââ */
+function Footer() {
+  return (
+    <footer style={{padding:'28px 48px', borderTop:`1px solid ${C.border}`, background:C.bg}}>
+      <div className="footer-inner" style={{display:'flex', alignItems:'center', justifyContent:'space-between', maxWidth:1280, margin:'0 auto'}}>
+        <div style={{display:'flex', alignItems:'center', gap:8}}>
+          <div style={{width:5, height:5, background:C.blue, borderRadius:1}} />
+          <span style={{fontSize:13, fontWeight:600, color:C.textBody}}>AI Deploy</span>
+          <span style={{fontSize:12, color:C.textFaint}}>Â· Intelligent Operations</span>
+        </div>
+        <div style={{display:'flex', alignItems:'center', gap:20}}>
+          <span style={{fontSize:12, color:C.textFaint, fontFamily:mono}}>EST. 2026</span>
+          <span style={{width:1, height:12, background:C.border, display:'inline-block'}} />
+          <span style={{fontSize:12, color:C.textFaint, fontFamily:mono}}>Sydney, Australia</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* âââ App âââ */
+function App() {
+  return (
+    <div style={{position:'relative', zIndex:1}}>
+      <Nav />
+      <Hero />
+      <ProblemSection />
+      <TransformationSection />
+      <ArchitectureSection />
+      <RouterSection />
+      <SkillLibrarySection />
+      <ValueSection />
+      <AutonomySection />
+      <ProcessSection />
+      <SurveySection />
+      <Footer />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+</script>
+</body>
+</html>
